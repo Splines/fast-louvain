@@ -8,7 +8,7 @@ publish = false
 
 [[bin]]
 name = "louvain"
-path = "src/bin/cli.rs"
+path = "src/bin/louvain.rs"
 
 [workspace]
 members = ["src/cli", "src/application", "src/domain"]
