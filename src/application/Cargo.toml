@@ -1,0 +1,11 @@
+[package]
+name = "louvain-application"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+# Workspace dependencies
+louvain-domain = "0.0.0"
+
+# External dependencies

@@ -1,8 +1,0 @@
-{
-    "clangd.arguments": [
-        "-log=verbose",
-        "-pretty",
-        "--background-index",
-        "--compile-commands-dir=build"
-    ]
-}

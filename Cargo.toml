@@ -1,0 +1,23 @@
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[package]
+name = "louvain"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "louvain"
+path = "src/bin/cli.rs"
+
+[workspace]
+members = ["src/cli", "src/application", "src/domain"]
+
+[dependencies]
+# Workspace dependencies
+louvain-cli = "0.0.0"
+
+[patch.crates-io]
+louvain-cli = { path = "src/cli" }
+louvain-application = { path = "src/application" }
+louvain-domain = { path = "src/domain" }

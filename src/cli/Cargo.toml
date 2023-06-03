@@ -1,0 +1,10 @@
+[package]
+name = "louvain-cli"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+# Workspace dependencies
+
+# External dependencies
