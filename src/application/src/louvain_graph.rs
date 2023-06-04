@@ -4,24 +4,28 @@ mod louvain_graph_test;
 
 use louvain_domain::graph::{EdgeWeight, Graph, Node};
 
-pub type NodeWeightedDegree = f32;
+pub type NodeWeightedDegree = f64;
 
 #[derive(Debug)]
-struct LouvainGraph {
+pub struct LouvainGraph {
     graph: Graph,
-    weighted_degrees: Vec<NodeWeightedDegree>,
-    self_loop_weighted_degrees: Vec<NodeWeightedDegree>,
-    total_weighted_degree: NodeWeightedDegree,
+    pub weighted_degrees: Vec<NodeWeightedDegree>,
+    pub self_loop_weighted_degrees: Vec<NodeWeightedDegree>,
+    pub total_weighted_degree: NodeWeightedDegree,
 }
 
 impl LouvainGraph {
-    pub fn new(num_nodes: usize) -> Self {
+    pub fn new(capacity: usize) -> Self {
         LouvainGraph {
-            graph: Graph::new(num_nodes),
-            weighted_degrees: vec![0.0; num_nodes],
-            self_loop_weighted_degrees: vec![0.0; num_nodes],
+            graph: Graph::new(capacity),
+            weighted_degrees: vec![0.0; capacity],
+            self_loop_weighted_degrees: vec![0.0; capacity],
             total_weighted_degree: 0.0,
         }
+    }
+
+    pub fn capacity(&self) -> usize {
+        self.graph.capacity
     }
 
     pub fn insert_edge(&mut self, source: Node, target: Node, weight: EdgeWeight) {
@@ -29,7 +33,7 @@ impl LouvainGraph {
     }
 
     /// Calculates the weighted degree of every node.
-    fn calc_degrees(&mut self) {
+    pub fn calc_degrees(&mut self) {
         self.graph
             .adj
             .iter()

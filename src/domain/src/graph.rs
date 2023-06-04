@@ -5,7 +5,7 @@ mod graph_test;
 use std::collections::HashMap;
 
 pub type Node = usize;
-pub type EdgeWeight = f32;
+pub type EdgeWeight = f64;
 
 /// "Adj" stands for "adjacent".
 /// Edges are stored in a HashMap where the key is the node id and
@@ -20,10 +20,12 @@ pub type Adj = HashMap<Node, HashMap<Node, EdgeWeight>>;
 /// as this information is retrieved frequently in the Louvain algorithm.
 ///
 /// Nodes are contiguously labeled from 0 to n-1.
+/// The Graph expects that all of its initial capacity is used and then
+/// the graph is not altered anymore at all.
 #[derive(Debug)]
 pub struct Graph {
     pub adj: Adj,
-    capacity: usize,
+    pub capacity: usize,
 }
 
 impl Graph {
