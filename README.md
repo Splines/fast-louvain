@@ -1,5 +1,5 @@
 # Fast Louvain
-A fast and modern Rust implementation of the Louvain algorithm.
+A Rust implementation of the Louvain algorithm for community detection in large networks. Works on undirected, weighted graphs (weights are optional).
 
 | :arrows_counterclockwise:   | This project is currently a work in progress. Once a first workable version is accomplished, I will publish a release. |
 |---------------|:-------------------------|
