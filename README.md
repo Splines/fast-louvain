@@ -12,5 +12,5 @@ cargo run --bin louvain
 ## Test
 Run all unit tests of every workspace.
 ```
-cargo test --lib --locked --workspace -- --nocapture
+cargo test --lib --locked --workspace
 ```

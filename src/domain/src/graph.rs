@@ -6,7 +6,6 @@ use std::collections::HashMap;
 
 pub type Node = usize;
 pub type EdgeWeight = f32;
-pub type NodeWeightedDegree = f32;
 
 /// "Adj" stands for "adjacent".
 /// Edges are stored in a HashMap where the key is the node id and
@@ -25,8 +24,6 @@ pub type Adj = HashMap<Node, HashMap<Node, EdgeWeight>>;
 pub struct Graph {
     pub adj: Adj,
     capacity: usize,
-    weighted_degrees: HashMap<Node, NodeWeightedDegree>,
-    total_weighted_degree: NodeWeightedDegree,
 }
 
 impl Graph {
@@ -34,8 +31,6 @@ impl Graph {
         Graph {
             adj: HashMap::with_capacity(capacity),
             capacity: capacity,
-            weighted_degrees: HashMap::with_capacity(capacity),
-            total_weighted_degree: 0.0,
         }
     }
 
@@ -57,7 +52,7 @@ impl Graph {
         // Graph is undirected, so we add the edge in both directions
         let neighbors = self.adj.entry(source).or_insert(HashMap::new());
         neighbors.insert(target, weight);
-        if (!is_self_loop) {
+        if !is_self_loop {
             let neighbors = self.adj.entry(target).or_insert(HashMap::new());
             neighbors.insert(source, weight);
         }
@@ -88,13 +83,5 @@ impl Graph {
             }
         }
         // No need to check the other way around as edges are undirected
-    }
-
-    fn calc_degrees(&self) {
-        // for (node, neighbors) in &self.adj {
-        //     for (neighbor, weight) in neighbors {
-        //         self.weightedDegrees[node] += weight;
-        //     }
-        // }
     }
 }

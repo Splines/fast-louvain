@@ -1,5 +1,3 @@
-use std::hash;
-
 use super::*;
 
 #[test]
