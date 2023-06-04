@@ -11,7 +11,7 @@ pub type NodeWeightedDegree = f32;
 /// "Adj" stands for "adjacent".
 /// Edges are stored in a HashMap where the key is the node id and
 /// the value is a vector of tuples of the form (neighbor, weight).
-pub type Adj = HashMap<Node, Vec<(Node, EdgeWeight)>>;
+pub type Adj = HashMap<Node, HashMap<Node, EdgeWeight>>;
 
 /// An undirected graph of vertices and edges with weights.
 ///
@@ -20,7 +20,7 @@ pub type Adj = HashMap<Node, Vec<(Node, EdgeWeight)>>;
 /// a map from nodes to their respective neighbors (including weights)
 /// as this information is retrieved frequently in the Louvain algorithm.
 ///
-/// Nodes are contiguously labels from 0 to n-1.
+/// Nodes are contiguously labeled from 0 to n-1.
 #[derive(Debug)]
 pub struct Graph {
     pub adj: Adj,
@@ -55,16 +55,24 @@ impl Graph {
             panic!("Node {} does not exist in graph", target);
         }
 
+        // Check that edge does not already exist
+        if self.adj.contains_key(&source) {
+            if self.adj[&source].contains_key(&target) {
+                panic!("Edge ({} <-> {}) already exists in graph", source, target);
+            }
+        }
+        // No need to check the other way around as edges are undirected
+
         // Graph is undirected, so we add the edge in both directions
-        let neighbors = self.adj.entry(source).or_insert(Vec::new());
-        neighbors.push((target, weight));
+        let neighbors = self.adj.entry(source).or_insert(HashMap::new());
+        neighbors.insert(target, weight);
         if (!is_self_loop) {
-            let neighbors = self.adj.entry(target).or_insert(Vec::new());
-            neighbors.push((source, weight));
+            let neighbors = self.adj.entry(target).or_insert(HashMap::new());
+            neighbors.insert(source, weight);
         }
     }
 
-    pub fn adjacent_edges(&self, node: Node) -> &Vec<(Node, EdgeWeight)> {
+    pub fn adjacent_edges(&self, node: Node) -> &HashMap<Node, EdgeWeight> {
         let res = self.adj.get(&node);
         match res {
             Some(neighbors) => neighbors,
