@@ -44,24 +44,15 @@ impl Graph {
     }
 
     pub fn insert_edge(&mut self, source: Node, target: Node, weight: EdgeWeight) {
-        // Check for self loops
-        let is_self_loop = source == target;
+        let is_self_loop = self.is_self_loop(&source, &target);
 
-        // Check if nodes exist
-        if source >= self.capacity {
-            panic!("Node {} does not exist in graph", source);
-        }
-        if !is_self_loop && target >= self.capacity {
-            panic!("Node {} does not exist in graph", target);
+        // Checks
+        self.check_node_exists(&source);
+        if !is_self_loop {
+            self.check_node_exists(&target);
         }
 
-        // Check that edge does not already exist
-        if self.adj.contains_key(&source) {
-            if self.adj[&source].contains_key(&target) {
-                panic!("Edge ({} <-> {}) already exists in graph", source, target);
-            }
-        }
-        // No need to check the other way around as edges are undirected
+        self.check_edge_does_not_exist(source, target);
 
         // Graph is undirected, so we add the edge in both directions
         let neighbors = self.adj.entry(source).or_insert(HashMap::new());
@@ -78,6 +69,25 @@ impl Graph {
             Some(neighbors) => neighbors,
             None => panic!("Node {} does not exist in graph", node),
         }
+    }
+
+    fn is_self_loop(&self, source: &Node, target: &Node) -> bool {
+        source == target
+    }
+
+    fn check_node_exists(&self, node: &Node) {
+        if *node >= self.capacity {
+            panic!("Node {} does not exist in graph", node);
+        }
+    }
+
+    fn check_edge_does_not_exist(&self, source: Node, target: Node) {
+        if self.adj.contains_key(&source) {
+            if self.adj[&source].contains_key(&target) {
+                panic!("Edge ({} <-> {}) already exists in graph", source, target);
+            }
+        }
+        // No need to check the other way around as edges are undirected
     }
 
     fn calc_degrees(&self) {
