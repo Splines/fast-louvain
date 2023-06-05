@@ -4,7 +4,8 @@ A Rust implementation of the Louvain algorithm for community detection in large 
 | :arrows_counterclockwise:   | This project is currently a work in progress. Once a first workable version is accomplished, I will publish a release. |
 |---------------|:-------------------------|
 
-| ::scroll::   | See the documentation [here](https://splines.github.io/fast-louvain/) (currently work in progress). |
+| :scroll:   | See the documentation [here](https://splines.github.io/fast-louvain/) (currently work in progress). |
+|---------------|:-------------------------|
 
 ## Build & Run
 ```
