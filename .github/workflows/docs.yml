@@ -1,5 +1,7 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# Reference
+# - Running mdbook in CI: https://rust-lang.github.io/mdBook/continuous-integration.html
+# - Automated deployment of mdBook: https://github.com/rust-lang/mdBook/wiki/Automated-Deployment
+name: Deploy mdBook to GitHub Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -24,7 +26,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
@@ -34,7 +35,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Build mdBook
-        # build commands from here: https://rust-lang.github.io/mdBook/continuous-integration.html
+        # build commands taken from here:
+        # https://rust-lang.github.io/mdBook/continuous-integration.html
         run: | 
           mkdir bin
           curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.30/mdbook-v0.4.30-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
