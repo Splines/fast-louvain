@@ -1,3 +1,9 @@
 # Summary
 
-- [Test chapter](./test_chapter.md)
+[Introduction](./introduction.md)
+
+---
+
+# How Louvain works
+
+- [Modularity](./modularity.md)
