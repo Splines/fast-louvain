@@ -57,7 +57,7 @@ impl<'a> Modularity<'a> {
         // Remove weighted degree of this vertex as contribution to the community
         self.weights_tot[community] -= self.graph.weighted_degrees[v];
 
-        // Reset community assignemnt
+        // Reset community assignment
         self.vertex_to_community[v] = 0;
     }
 
@@ -94,7 +94,7 @@ impl<'a> Modularity<'a> {
             - (tot_community * weighted_degree_vertex) / twice_total_weighted_degree
     }
 
-    pub fn quality(&self) -> f64 {
+    pub fn modularity(&self) -> f64 {
         let mut quality: f64 = 0.0;
         let twice_total_weighted_degree = self.graph.total_weighted_degree * 2.0;
 

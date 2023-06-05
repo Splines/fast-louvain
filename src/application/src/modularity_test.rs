@@ -25,4 +25,12 @@ fn modularity_init() {
     assert_eq!(m.weights_tot, vec![4.0, 13.0, 7.5, 10.5]);
 }
 
+#[test]
+fn modularity() {
+    let g = louvain_test_graph();
+    let m = Modularity::new(&g);
+
+    assert_eq!(m.modularity(), 3.14);
+}
+
 // TODO: add more tests and calculate modularity by hand for those.

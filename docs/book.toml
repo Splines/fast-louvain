@@ -1,0 +1,11 @@
+[book]
+authors = ["Splines"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Fast Louvain"
+
+[output.html]
+default-theme = "light"
+mathjax-support = true
+git-repository-url = "https://github.com/splines/fast-louvain"
