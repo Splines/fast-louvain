@@ -6,4 +6,4 @@
 
 # How Louvain works
 
-- [Modularity](./modularity.md)
+- [Modularity](./modularity/modularity.md)
