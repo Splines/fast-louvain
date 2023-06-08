@@ -18,6 +18,12 @@ Run all unit tests of every workspace.
 cargo test --lib --locked --workspace
 ```
 
+## Build, watch and open docs
+In one command!
+```
+mdbook watch ./docs --open
+```
+
 
 <!-- References -->
 <details>
