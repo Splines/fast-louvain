@@ -2,6 +2,7 @@
 * - html font-family
 * - header font-family
 * - Katex customization
+* - figcaption styling
 */
 
 /* Base styles and content styles */
@@ -283,4 +284,8 @@ kbd {
 
 .katex {
     font-size: 1.0em !important;
+}
+
+figcaption {
+    font-style: italic;
 }
