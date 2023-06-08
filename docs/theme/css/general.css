@@ -3,6 +3,7 @@
 * - header font-family
 * - Katex customization
 * - figcaption styling
+* - footnote styling
 */
 
 /* Base styles and content styles */
@@ -288,4 +289,15 @@ kbd {
 
 figcaption {
     font-style: italic;
+    font-size: 0.9em;
+}
+
+p:has(.footnote-reference:first-child) {
+    font-style: italic;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
