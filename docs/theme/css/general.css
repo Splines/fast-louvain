@@ -292,7 +292,7 @@ figcaption {
     font-size: 0.9em;
 }
 
-p:has(.footnote-reference:first-child) {
+.footnote-definition p {
     font-style: italic;
 }
 

@@ -143,6 +143,6 @@ clusters with small total degrees each."** ~ from [here](https://doi.org/10.1109
 <!-- Footnotes -->
 ---
 
-[^graph-repr] Note that this is just the representation of the graph for this book, not for the actual Rust code.
+[^graph-repr]: Note that this is just the representation of the graph for this book, not for the actual Rust code.
 
-[^edge-stubs-self-loops] The "$-1$" is introduced because an edge stub cannot connect to itself in the configuration model. However, this still allows for self-loops as one edge stub could connect to another one on the same vertex.
+[^edge-stubs-self-loops]: The "$-1$" is introduced because an edge stub cannot connect to itself in the configuration model. However, this still allows for self-loops as one edge stub could connect to another one on the same vertex.
