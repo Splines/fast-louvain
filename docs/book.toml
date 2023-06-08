@@ -13,3 +13,4 @@ git-repository-url = "https://github.com/splines/fast-louvain"
 
 [preprocessor.katex]
 after = ["links"]
+macros = "./src/katex-macros.txt"
