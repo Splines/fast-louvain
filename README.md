@@ -32,7 +32,7 @@ cargo test --lib --locked --workspace
 
 The source code of this program is licensed with the very permissive MIT license, see the [LICENSE file](https://github.com/Splines/raspi-captive-portal/blob/main/LICENSE) for details. When you use this project (e.g. make a fork that becomes its own project), I do not require you to include the license header in every source file, however you must include it at the root of your project. According to the MIT license you must also include a copyright notice, that is, link back to this project, e.g. in this way:
 
-> [Fast Louvain](https://github.com/Splines/raspi-captive-portal) - Copyright (c) 2023 Splines
+> [Fast Louvain](https://github.com/splines/fast-louvain) - Copyright (c) 2023 Splines
 
 Any questions regarding the license? [This FAQ](https://www.tawesoft.co.uk/kb/article/mit-license-faq) might help.
 
