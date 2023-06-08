@@ -10,3 +10,6 @@ default-theme = "light"
 curly-quotes = true
 mathjax-support = true
 git-repository-url = "https://github.com/splines/fast-louvain"
+
+[preprocessor.katex]
+after = ["links"]

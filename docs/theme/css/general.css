@@ -1,5 +1,7 @@
 /* Customization:
 * - html font-family
+* - header font-family
+* - Katex customization
 */
 
 /* Base styles and content styles */
@@ -277,4 +279,8 @@ kbd {
 
 .result-no-output {
     font-style: italic;
+}
+
+.katex {
+    font-size: 1.0em !important;
 }

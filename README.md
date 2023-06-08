@@ -19,7 +19,12 @@ cargo test --lib --locked --workspace
 ```
 
 ## Build, watch and open docs
-In one command!
+We use the [`mdbook-katex`](https://github.com/lzanini/mdbook-katex) preprocessor, so you should install it first:
+```
+cargo install mdbook-katex
+```
+
+Then build, watch and open the book:
 ```
 mdbook watch ./docs --open
 ```
