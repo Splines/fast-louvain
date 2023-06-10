@@ -1,5 +1,7 @@
 # Modularity calculation examples
 
+> **🚨 This page is a work in progress.**
+
 We've given an intuition for the quality function **modularity** that is defined as follows with [two equivalent formulas](./formula.md):
 
 $$

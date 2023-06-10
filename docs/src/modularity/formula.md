@@ -132,6 +132,13 @@ Q(\Cs) &= \sum_{c\in \Cs}
 \end{align}
 $$
 
+$$
+\boxed{
+Q(\Cs) = \frac{1}{2m} \sum_{c\in \Cs} \left( \Sigma_c
+- \frac{\left(\Sigma_{\hat{c}}\right)^2}{2m} \right)
+}
+$$
+
 with $\Sigma_c = \sum_{u\in c} \sum_{v \in c} A_{uv}$ and $\Sigma_{\hat{c}} = \sum_{v\in c} k_v$. Here, $\Sigma_{\hat{c}}$ is the sum of the weights of edges incident to vertices in $c$ (including self-loops), while $\Sigma_c$ is the sum of the weights of edges inside the community[^weights-inside]. This is the actual formula used in the code.
 
 
