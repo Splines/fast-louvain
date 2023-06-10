@@ -4,6 +4,7 @@
 
 ---
 
-# How Louvain works
+# Modularity
 
-- [Modularity](./modularity/modularity.md)
+- [Formula](./modularity/formula.md)
+- [Examples](./modularity/examples.md)
