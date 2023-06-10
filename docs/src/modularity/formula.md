@@ -9,7 +9,7 @@ We are often faced with networks whose underlying community structure is not kno
 
 The following figure depicts a contrived network with different vertex-community assignments. The intuitive grouping of vertices into communities in (a) leads to the maximal achievable modularity value of $Q ≈ 0.46$ for this particular graph. This grouping is characterized by only sparse connections between communities which are in themselves densely connected. In contrast, figure (b) results in a lower value of just $Q ≈ 0.13$. We will discuss the possible range of modularity values later on.
 
-<figure>
+<figure class="center">
     <img src="./simple-network-modularity-comparison.svg"
          alt="Different qualities for different vertex-community assignments">
     <figcaption>Simple network with different proposed vertex-community assignments. (a) shows the optimal grouping of vertices into three communities, while (b) depicts a bad grouping into five communities. The blue community even induces a disconnected subgraph. Image inspired by <a href="https://www.pnas.org/doi/full/10.1073/pnas.0601602103">this paper</a>.</figcaption>
@@ -56,11 +56,10 @@ p(u,v) = \frac{k_u k_v}{2m-1}
 $$
 
 
-<figure>
+<figure class="center">
     <img src="./configuration-model.svg"
          alt="Configuration model"
-         width="250px"
-         class="center">
+         width="250px">
     <figcaption>Configuration model with $k_u = 6$ and $k_v = 5$. One possible edge between stubs is shown as dashed line.
     </figcaption>
 </figure>
@@ -76,7 +75,7 @@ a_c^2 \coloneqq \frac{1}{2m} \sum_{u \in c} \sum_{v\in c} \frac{k_u k_v}{2m}
 }
 $$
 
-The same reasoning as before applies here for the term $\frac{1}{2m}$. Since we are dealing with big networks where $2m ≫ 1$, it is reasonable to drop the aforementioned “$−1$” in the denominator, which is common in literature (see [here](https://doi.org/10.1103/PhysRevE.70.066111) and [here](https://doi.org/10.1073%2Fpnas.0601602103)). Again, to show the connection to the original definition of modularity by Newman and Girvan, we refer to this term as $a_c^2$ where for any community $c$, we define $a_c$ as:
+The same reasoning as before applies here for the term $\frac{1}{2m}$. Since we are dealing with big networks where $2m ≫ 1$, it is reasonable to drop the aforementioned “$−1$” in the denominator, which is common in literature (see [here](https://doi.org/10.1103/PhysRevE.70.066111) and [here](https://doi.org/10.1073%2Fpnas.0601602103)). Again, to show the connection to the original definition of modularity by Newman and Girvan, we refer to this term as $a_c^2$, where for any community $c$, we define $a_c$ as:
 
 $$
 a_c = \frac{1}{2m} \sum_{v\in c} k_v
@@ -87,26 +86,26 @@ This denotes the fraction of edge stubs (out of all $\approx 2m$ edge stubs in t
 By combining $e_c$ with $a_c^2$ and by iterating over all communities $c\in \Cs$, we get:
 $$
 \begin{align}
-Q(\Cs) &= \bigl( \text{fraction of edges that fall within the proposed communities}\bigr)\\
+Q(\Cs) &\coloneqq \bigl( \text{fraction of edges that fall within the proposed communities}\bigr)\\
 &\quad - \bigl(\text{expected fraction of such edges in a random graph}\bigr)\\
 &= \sum_{c\in \Cs} (e_c - a_c^2)\\
 &= \sum_{c\in \Cs} \left(
-    \frac{1}{2m} \sum_{u\in c} \sum_{v\in c} A_uv
+    \frac{1}{2m} \sum_{u\in c} \sum_{v\in c} A_{uv}
 - \frac{1}{2m} \sum_{u\in c} \sum_{v\in c} \frac{k_u k_v}{2m}
 \right)
 \end{align}
 $$
 
-This gives us the definition of modularity that is often found in literature. We can later use this measure as quality function for genetic algorithms, rendering the problem of community detection into that of modularity optimization.
+This gives us the definition of modularity that is often found in literature. We can use this measure as **q**uality function for algorithms, rendering the problem of community detection into that of modularity optimization. Note that the variable $Q$ stands for "quality" [^quality].
 
 $$
 \boxed{
     Q(\Cs) = \frac{1}{2m} \sum_{c\in \Cs} \sum_{u\in c} \sum_{v\in c}
-    \left( A_uv - \frac{k_u k_v}{2m} \right)
+    \left( A_{uv} - \frac{k_u k_v}{2m} \right)
 }
 $$
 
-Note that while we only consider undirected graphs here, modularity can be extended to directed graphs as well, as seen [here](https://doi.org/10.1088/1367-2630/9/6/176) and [here](https://hal.archives-ouvertes.fr/hal-01231784).
+While we only consider undirected (and possibly weighted) graphs here, modularity can be extended to directed graphs as well, as seen [here](https://doi.org/10.1088/1367-2630/9/6/176) and [here](https://hal.archives-ouvertes.fr/hal-01231784).
 
 
 
@@ -126,18 +125,18 @@ Q(\Cs) &= \sum_{c\in \Cs}
 &= \sum_{c\in \Cs}
 \left( \sum_{u\in c} \sum_{v\in c} \frac{A_{uv}}{2m}
 - \left(\frac{\sum_{v\in c} k_v}{2m}\right)^2\right)\\
-&= \sum_{c\in \Cs} \left( \frac{\lvert E(c) \rvert}{m}
-- \left(\frac{\sum_{v\in c} k_v}{2m}\right)^2 \right)
+&= \sum_{c\in \Cs} \left( \frac{\Sigma_c}{2m}
+- \left(\frac{\Sigma_{\hat{c}}}{2m}\right)^2 \right)\\
+&= \frac{1}{2m} \sum_{c\in \Cs} \left( \Sigma_c
+- \frac{\left(\Sigma_{\hat{c}}\right)^2}{2m} \right)\\
 \end{align}
 $$
 
-where $\lvert E(c) \rvert$ or $m_c$ denotes the number of edges with both ends in community $c$.
+with $\Sigma_c = \sum_{u\in c} \sum_{v \in c} A_{uv}$ and $\Sigma_{\hat{c}} = \sum_{v\in c} k_v$. Here, $\Sigma_{\hat{c}}$ is the sum of the weights of edges incident to vertices in $c$ (including self-loops), while $\Sigma_c$ is the sum of the weights of edges inside the community[^weights-inside]. This is the actual formula used in the code.
 
 
-> **"This reveals an inherent trade-off: To maximize the first term,
-many edges should be contained in clusters, whereas the minimization
-of the second term is achieved by splitting the graph into many
-clusters with small total degrees each."** ~ from [here](https://doi.org/10.1109/TKDE.2007.190689)
+
+> **"This reveals an inherent trade-off: To maximize the first term [inside the parantheses], many edges should be contained in clusters, whereas the minimization of the second term is achieved by splitting the graph into many clusters with small total degrees each."** ~ from [here](https://doi.org/10.1109/TKDE.2007.190689)
 
 
 <!-- Footnotes -->
@@ -146,3 +145,7 @@ clusters with small total degrees each."** ~ from [here](https://doi.org/10.1109
 [^graph-repr]: Note that this is just the representation of the graph for this book, not for the actual Rust code.
 
 [^edge-stubs-self-loops]: The "$-1$" is introduced because an edge stub cannot connect to itself in the configuration model. However, this still allows for self-loops as one edge stub could connect to another one on the same vertex.
+
+[^quality]: Modularity is just one quality function (out of many others) that we will discuss here as it has been widely adopted in literature.
+
+[^weights-inside]: For undirected graphs, this is actually twice the sum of the weights of edges except for self-loops since they are counted only once (they are on the main diagonal of the adjacency matrix).
