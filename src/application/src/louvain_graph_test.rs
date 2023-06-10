@@ -17,7 +17,7 @@ fn graph_init() {
     assert_eq!(g.self_loop_weighted_degrees[1], 0.0);
     assert_eq!(g.self_loop_weighted_degrees[2], 0.0);
 
-    assert_eq!(g.total_weighted_degree, 0.0);
+    assert_eq!(g.twice_total_weighted_degree, 0.0);
 }
 
 #[test]
@@ -44,5 +44,5 @@ fn calc_degrees() {
     assert_eq!(g.self_loop_weighted_degrees[3], 1.0);
 
     // Total degree
-    assert_eq!(g.total_weighted_degree, 35.0);
+    assert_eq!(g.twice_total_weighted_degree, 35.0);
 }

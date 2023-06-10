@@ -89,20 +89,20 @@ impl<'a> Modularity<'a> {
         // to compare, not absolute values. The correct equation would be:
         // \Delta Q = \frac{1}{m} \cdot \Bigl( k_{i,in} - \frac{\Sigma_{tot}\cdot k_i}{2m} \Bigr)
         let tot_community = self.weights_tot[community];
-        let twice_total_weighted_degree = self.graph.total_weighted_degree * 2.0;
+        let twice_total_weighted_degree = self.graph.twice_total_weighted_degree * 2.0;
         vertex_weighted_degree_of_edges_to_community
             - (tot_community * weighted_degree_vertex) / twice_total_weighted_degree
     }
 
     pub fn modularity(&self) -> f64 {
         let mut quality: f64 = 0.0;
-        let twice_total_weighted_degree = self.graph.total_weighted_degree * 2.0;
+        let twice_total_weighted_degree = self.graph.twice_total_weighted_degree;
 
-        // Unique communities
         let unique_communities = self
             .vertex_to_community
             .iter()
             .collect::<std::collections::HashSet<_>>();
+
         for community in unique_communities {
             quality += self.weights_in[*community]
                 - self.weights_tot[*community].powi(2) / twice_total_weighted_degree;

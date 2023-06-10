@@ -11,7 +11,7 @@ pub struct LouvainGraph {
     graph: Graph,
     pub weighted_degrees: Vec<NodeWeightedDegree>,
     pub self_loop_weighted_degrees: Vec<NodeWeightedDegree>,
-    pub total_weighted_degree: NodeWeightedDegree,
+    pub twice_total_weighted_degree: NodeWeightedDegree,
 }
 
 impl LouvainGraph {
@@ -20,7 +20,7 @@ impl LouvainGraph {
             graph: Graph::new(capacity),
             weighted_degrees: vec![0.0; capacity],
             self_loop_weighted_degrees: vec![0.0; capacity],
-            total_weighted_degree: 0.0,
+            twice_total_weighted_degree: 0.0,
         }
     }
 
@@ -37,15 +37,15 @@ impl LouvainGraph {
         self.graph
             .adj
             .iter()
-            .for_each(|(node, neighbors_with_weights)| {
+            .for_each(|(node, neighbor_edges_weights)| {
                 // Note this also includes weights of self-loops
-                let incr_weight = neighbors_with_weights.values().sum::<EdgeWeight>();
-                self.total_weighted_degree += incr_weight;
+                let incr_weight = neighbor_edges_weights.values().sum::<EdgeWeight>();
+                self.twice_total_weighted_degree += incr_weight; // weighted degree counted twice here -> each order of the argument
                 self.weighted_degrees[*node] += incr_weight;
 
                 // Also consider self-loops separately
-                if neighbors_with_weights.contains_key(node) {
-                    self.self_loop_weighted_degrees[*node] += neighbors_with_weights[node];
+                if neighbor_edges_weights.contains_key(node) {
+                    self.self_loop_weighted_degrees[*node] += neighbor_edges_weights[node];
                 }
             });
     }

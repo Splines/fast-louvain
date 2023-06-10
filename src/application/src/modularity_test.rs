@@ -30,7 +30,8 @@ fn modularity() {
     let g = louvain_test_graph();
     let m = Modularity::new(&g);
 
-    assert_eq!(m.modularity(), 3.14);
+    let m_rounded = (m.modularity() * 1e6).round() / 1e6;
+    assert_eq!(m_rounded, -0.172653);
 }
 
 // TODO: add more tests and calculate modularity by hand for those.
