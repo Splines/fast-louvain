@@ -182,6 +182,6 @@ Q(\Cs) &= \frac{1}{2m} \sum_{c\in \Cs} \left( \Sigma_c
 \end{align}
 $$
 
-If we somehow already know the values for $\Sigma_c$ and $\Sigma_{\hat{c}}$, i.e. the sum of the weights of edges inside the community and respectively the sum of the weights of edges incident to community vertices (aka vertex degrees), the second formula is the way to go as we can just plug our values in and are done in no time.
+If we somehow already know the values for $\Sigma_c$ and $\Sigma_{\hat{c}}$, i. e. the sum of the weights of edges inside the community and respectively the sum of the weights of edges incident to community vertices (aka vertex degrees), the second formula is the way to go as we can just plug our values in and are done in no time.
 
 > 🎈 **Task**: Come up with your own graphs and calculate modularity by hand for those. Guess a good vertex-community assignment and see if modularity increases compared to a vertex-community assignment you feel is bad, e.g. when putting all vertices in one big community.

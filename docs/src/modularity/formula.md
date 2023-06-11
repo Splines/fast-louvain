@@ -146,6 +146,10 @@ with $\Sigma_c = \sum_{u\in c} \sum_{v \in c} A_{uv}$ and $\Sigma_{\hat{c}} = \s
 > **"This reveals an inherent trade-off: To maximize the first term [inside the parantheses], many edges should be contained in clusters, whereas the minimization of the second term is achieved by splitting the graph into many clusters with small total degrees each."** ~ from [here](https://doi.org/10.1109/TKDE.2007.190689)
 
 
+> 🎈 **Task**: We motivated the introduction of a negative term in the modularity formula by this observation: "However, the trivial case with all vertices in the same community yields a maximum value of 1." Make sure you understand why this is the case. Take a look at the definition of $e_c$.
+
+
+
 <!-- Footnotes -->
 ---
 
