@@ -302,3 +302,19 @@ figcaption {
     margin-right: auto;
     text-align: center
 }
+
+#comments-wrapper {
+    margin: 4em auto 0 auto;
+    max-width: var(--content-max-width);
+    overflow-wrap: break-word;
+}
+
+#comments_toggle {
+    padding: 6px 3px;
+    border: 2px solid gray;
+    transition: box-shadow 100ms ease-out;
+}
+
+#comments_toggle:hover {
+    box-shadow: 2px 2px gray;
+}

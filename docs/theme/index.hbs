@@ -195,23 +195,6 @@
                 <div id="content" class="content">
                     <main>
                         {{{ content }}}
-
-                        {{!-- Disqus Comments Section below every page --}}
-                        <div id="disqus_thread"></div>
-                        <script>
-                            (function () {
-                                var d = document, s = d.createElement('script');
-                                s.src = 'https://fast-louvain.disqus.com/embed.js';
-                                s.setAttribute('data-timestamp', +new Date());
-                                (d.head || d.body).appendChild(s);
-                            })();
-                        </script>
-                        <noscript>
-                            Please enable JavaScript to view the
-                            <a href="https://disqus.com/?ref_noscript" rel="nofollow">
-                                comments.
-                            </a>
-                        </noscript>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
@@ -232,6 +215,34 @@
 
                         <div style="clear: both"></div>
                     </nav>
+
+                    {{!-- Disqus Comments Section below every page --}}
+                    <div id="comments-wrapper">
+                        <button id="comments_toggle" onclick="toggleComments()">
+                            Toggle comments
+                        </button>
+                        <div id="disqus_thread" class="hidden"></div>
+                        <script>
+                            (function () {
+                                var d = document, s = d.createElement('script');
+                                s.src = 'https://fast-louvain.disqus.com/embed.js';
+                                s.setAttribute('data-timestamp', +new Date());
+                                (d.head || d.body).appendChild(s);
+                            })();
+                        </script>
+                        <noscript>
+                            Please enable JavaScript to view the
+                            <a href="https://disqus.com/?ref_noscript" rel="nofollow">
+                                comments.
+                            </a>
+                        </noscript>
+                        <script>
+                            function toggleComments() {
+                                const commentsDiv = document.getElementById('disqus_thread');
+                                commentsDiv.classList.toggle('hidden');
+                            }
+                        </script>
+                    </div>
                 </div>
             </div>
 
