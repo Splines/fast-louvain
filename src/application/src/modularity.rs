@@ -9,14 +9,29 @@ use crate::louvain_graph::LouvainGraph;
 pub type Community = usize;
 pub type VertexToCommunity = Vec<Community>;
 
+/// Measure to evaluate how good a proposed partition of the network into
+/// communities is. Modularity is in the range [-0.5, 1].
+///
+/// Modularity Q is maximized for divisions of a graph when many edges fall
+/// within the proposed communities (intra-community edges)
+/// as compared to edges between communities (inter-community edges).
+///
+/// Note that for the Louvain algorithm, we only need to calculate the absolute
+/// modularity once for every pass when every node is in its own singleton
+/// community. Then, only relative deltas of modularity are calculated and
+/// added to the global value.
+/// Therefore, this implementation of modularity does not allow to
+/// calculate modularity for arbitrary vertex-community assignments.
 struct Modularity<'a> {
     graph: &'a LouvainGraph,
     vertex_to_community: VertexToCommunity,
-    /// Sum of weights of edges belonging to a community C
+    /// Sum of weights of edges belonging to a community c
     weights_in: Vec<f64>,
-    /// Sum of weighted degrees of nodes in a community C
-    /// (Sum of the weights of the edges incident to nodes in a community C,
-    /// including self-loops)
+    /// Sum of weighted degrees of nodes in a community c (including self-loops
+    /// which are only counted once, other than undirected edges). This is
+    /// equivalent to: Sum of the weights of the edges incident to nodes
+    /// in a communiyt c, including self-loops (including edges with both
+    /// ends in community c).
     weights_tot: Vec<f64>,
 }
 
@@ -46,7 +61,7 @@ impl<'a> Modularity<'a> {
         community: usize,
         weighted_degree_of_edges_in_community: f64,
     ) {
-        // since edges are undirected, we need to count their weights twice
+        // Since edges are undirected, we need to count their weights twice
         // EXCEPT FOR self-loops where i=vertex & j=vertex only appears once
         // in the sum (see formula for modularity). In other cases, we need the
         // weight of the edge for each order of arguments, thus i=vertex1 & j=vertex2
@@ -98,6 +113,7 @@ impl<'a> Modularity<'a> {
         let mut quality: f64 = 0.0;
         let twice_total_weighted_degree = self.graph.twice_total_weighted_degree;
 
+        // TODO: Get rid of unique_communities retrieval
         let unique_communities = self
             .vertex_to_community
             .iter()
