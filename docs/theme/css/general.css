@@ -4,6 +4,7 @@
 * - Katex customization
 * - figcaption styling
 * - footnote styling
+* - chapter in sidebar styling
 */
 
 /* Base styles and content styles */
@@ -271,6 +272,14 @@ kbd {
 
 .tooltipped .tooltiptext {
     visibility: visible;
+}
+
+.chapter {
+    font-weight: normal;
+}
+
+.active {
+    font-weight: bolder;
 }
 
 .chapter li.part-title {
