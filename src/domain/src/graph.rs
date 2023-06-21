@@ -32,7 +32,7 @@ impl Graph {
     pub fn new(capacity: usize) -> Self {
         Graph {
             adj: HashMap::with_capacity(capacity),
-            capacity: capacity,
+            capacity,
         }
     }
 
@@ -79,10 +79,11 @@ impl Graph {
     }
 
     fn check_edge_does_not_exist(&self, source: Node, target: Node) {
-        if self.adj.contains_key(&source) {
-            if self.adj[&source].contains_key(&target) {
-                panic!("Edge ({} <-> {}) already exists in graph", source, target);
-            }
+        if !self.adj.contains_key(&source) {
+            return;
+        }
+        if self.adj[&source].contains_key(&target) {
+            panic!("Edge ({} <-> {}) already exists in graph", source, target);
         }
         // No need to check the other way around as edges are undirected
     }
