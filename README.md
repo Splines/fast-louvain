@@ -1,11 +1,13 @@
 <p align="center">
-        <a href="https://splines.github.io/fast-louvain/">
-            <img src="https://github.com/Splines/fast-louvain/assets/37160523/8c38f388-bd65-454c-8aae-8ab3161209cc"
-                width="800px">
-        </a>
+        <img src="https://github.com/Splines/fast-louvain/assets/37160523/8c38f388-bd65-454c-8aae-8ab3161209cc"
+            width="900px">
         <h2 align="center">Fast Louvain</h3>
       <p align="center">Rust implementation of the Louvain algorithm for community detection in large networks.</p>   
 </p>
+
+<br>
+<br>
+
 
 Works on undirected, weighted graphs (weights are optional).
 
@@ -26,6 +28,8 @@ Works on undirected, weighted graphs (weights are optional).
 
 
 
+<br>
+<br>
 
 ## Build & Run
 ```
