@@ -1,5 +1,13 @@
-# Fast Louvain
-A Rust implementation of the Louvain algorithm for community detection in large networks. Works on undirected, weighted graphs (weights are optional).
+<p align="center">
+        <a href="https://splines.github.io/fast-louvain/">
+            <img src="https://github.com/Splines/fast-louvain/assets/37160523/8c38f388-bd65-454c-8aae-8ab3161209cc"
+                width="800px">
+        </a>
+        <h2 align="center">Fast Louvain</h3>
+      <p align="center">Rust implementation of the Louvain algorithm for community detection in large networks.</p>   
+</p>
+
+Works on undirected, weighted graphs (weights are optional).
 
 | :arrows_counterclockwise:   | This project is currently a work in progress. Once a first workable version is accomplished, I will publish a release. |
 |---------------|:-------------------------|
@@ -7,15 +15,16 @@ A Rust implementation of the Louvain algorithm for community detection in large 
 | :scroll:   | The [documentation book](https://splines.github.io/fast-louvain/) (work in progress) includes a detailed description of modularity (including derivations of formulas) and the Louvain algorithm. It explains and motivates the use of the Louvain method and illustrates key aspects with images, e.g. this one: |
 |---------------|:-------------------------|
 
-<figure class="center">
-    <p align="center">
-        <a href="https://splines.github.io/fast-louvain/">
-            <img src="./docs/src/louvain/images/louvain-hierarchy-3d-plain-without-arrows.svg"
-                alt="Resulting Louvain hierarchy for a sample graph in the documentation"
-                width="350px">
-        </a>
-    </p>
-</figure>
+
+<p align="center">
+    <a href="https://splines.github.io/fast-louvain/">
+        <img src="./docs/src/louvain/images/louvain-hierarchy-3d-plain-without-arrows.svg"
+            alt="Resulting Louvain hierarchy for a sample graph in the documentation"
+            width="350px">
+    </a>
+</p>
+
+
 
 
 ## Build & Run
