@@ -23,7 +23,7 @@ Let's see it in action with some examples and go through the calculations step b
 Consider the following graph
 
 <figure class="center">
-    <img src="./weighted-test-graph.svg"
+    <img src="./images/weighted-test-graph.svg"
          alt="Weighted test graph"
          width="220px">
     <figcaption>A simple weighted test graph</figcaption>
@@ -106,7 +106,7 @@ The difference between the two formulations is not apparent in this example as w
 ## Weighted graph with other communities
 
 <figure class="center">
-    <img src="./weighted-test-graph-better-communities.svg"
+    <img src="./images/weighted-test-graph-better-communities.svg"
          alt="Weighted test graph"
          width="220px">
     <figcaption>The same weighted test graph as before with a different vertex-community assignment</figcaption>

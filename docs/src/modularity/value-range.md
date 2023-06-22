@@ -16,7 +16,7 @@ the best result of $Q \approx 0.46$ for that particular graph.
 In theory, the maximum possible modularity value is $1$ for a graph with infinitely many communities, such that $a^2_c \rightarrow 0$. We show this property for a graph with $t \coloneqq \lvert \Cs \rvert$ communities, each forming a $K_2$ graph, i. e. two vertices sharing one edge.
 
 <figure class="center">
-    <img src="./modularity-max-1.svg"
+    <img src="./images/modularity-max-1.svg"
          alt="Graph for upper limit of modularity"
          width="300px">
     <figcaption>Infinite graph and community assignment yielding the upper limit of modularity: $1$</figcaption>
@@ -43,7 +43,7 @@ As $\sum_{c\in Cs} \sum_{u\in c} \sum_{v\in c} A_{uv} \leq 2m$ and $\sum_{c\in C
 The lower limit of modularity is $-\frac{1}{2}$ which is achieved using any bipartite graph $G(U, V, E)$ with the clustering $C = \{ c_U, c_V \}$ (see [here](https://doi.org/10.1109/TKDE.2007.190689)), that is, each cluster encompasses all the vertices of one bipartition of $G$ (the vertex sets $U$ or respectively $V$). The following figure shows the bipartite graph $G(U, V,E)$ with $U = \{ 0, 1 \}$, $V = \{ 2, 3, 4, 5 \}$ and $E = \bigl\{ \{ 0, 2 \}, \{ 0, 3 \}, \{ 1, 4 \} \bigr\}$. The given community assignment yields a modularity of $-\frac{1}{2}$, while the maximum modularity for this particular graph is $Q \approx 0.44$.
 
 <figure class="center">
-    <img src="./modularity-min.svg"
+    <img src="./images/modularity-min.svg"
          alt="Graph for lower limit of modularity"
          width="150px">
     <figcaption>Bipartite graph and community assignment yielding the lower limit of modularity: $-0.5$</figcaption>

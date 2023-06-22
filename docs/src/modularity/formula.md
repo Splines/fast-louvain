@@ -10,7 +10,7 @@ We are often faced with networks whose underlying community structure is not kno
 The following figure depicts a contrived network with different vertex-community assignments. The intuitive grouping of vertices into communities in (a) leads to the maximal achievable modularity value of $Q ≈ 0.46$ for this particular graph. This grouping is characterized by only sparse connections between communities which are in themselves densely connected. In contrast, figure (b) results in a lower value of just $Q ≈ 0.13$. We will discuss the possible range of modularity values later on.
 
 <figure class="center">
-    <img src="./simple-network-modularity-comparison.svg"
+    <img src="./images/simple-network-modularity-comparison.svg"
          alt="Different qualities for different vertex-community assignments">
     <figcaption>Simple network with different proposed vertex-community assignments. (a) shows the optimal grouping of vertices into three communities, while (b) depicts a bad grouping into five communities. The blue community even induces a disconnected subgraph. Image inspired by <a href="https://www.pnas.org/doi/full/10.1073/pnas.0601602103">this paper</a>.</figcaption>
 </figure>
@@ -57,7 +57,7 @@ $$
 
 
 <figure class="center">
-    <img src="./configuration-model.svg"
+    <img src="./images/configuration-model.svg"
          alt="Configuration model"
          width="250px">
     <figcaption>Configuration model with $k_u = 6$ and $k_v = 5$. One possible edge between stubs is shown as dashed line.
