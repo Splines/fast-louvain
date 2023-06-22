@@ -4,8 +4,19 @@ A Rust implementation of the Louvain algorithm for community detection in large 
 | :arrows_counterclockwise:   | This project is currently a work in progress. Once a first workable version is accomplished, I will publish a release. |
 |---------------|:-------------------------|
 
-| :scroll:   | See the documentation [here](https://splines.github.io/fast-louvain/) (currently work in progress). |
+| :scroll:   | The [documentation book](https://splines.github.io/fast-louvain/) (work in progress) includes a detailed description of modularity (including derivations of formulas) and the Louvain algorithm. It explains and motivates the use of the Louvain method and illustrates key aspects with images, e.g. this one: |
 |---------------|:-------------------------|
+
+<figure class="center">
+    <p align="center">
+        <a href="https://splines.github.io/fast-louvain/">
+            <img src="./docs/src/louvain/images/louvain-hierarchy-3d-plain-without-arrows.svg"
+                alt="Resulting Louvain hierarchy for a sample graph in the documentation"
+                width="350px">
+        </a>
+    </p>
+</figure>
+
 
 ## Build & Run
 ```
