@@ -1,6 +1,6 @@
 <p align="center">
-        <img src="https://github.com/Splines/fast-louvain/assets/37160523/8c38f388-bd65-454c-8aae-8ab3161209cc"
-            width="900px">
+        <img src="https://github.com/Splines/fast-louvain/assets/37160523/a0f1f87a-8542-413e-86d8-2c8af846dd76"
+            width="200px">
         <h2 align="center">Fast Louvain</h3>
       <p align="center">Rust implementation of the Louvain algorithm for community detection in large networks.</p>   
 </p>
@@ -80,3 +80,5 @@ Note that the [documentation book](https://splines.github.io/fast-louvain/) is e
 
 </details>
 
+
+![fast-louvain-social-preview](https://github.com/Splines/fast-louvain/assets/37160523/91f9c119-1876-429d-9b04-56f4aad0dd9c)
