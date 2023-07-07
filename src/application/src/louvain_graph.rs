@@ -1,3 +1,6 @@
+#[path = "./louvain_graph_samples.rs"]
+pub mod louvain_graph_samples;
+
 #[cfg(test)]
 #[path = "./louvain_graph_test.rs"]
 mod louvain_graph_test;
@@ -33,6 +36,7 @@ impl LouvainGraph {
     }
 
     /// Calculates the weighted degree of every node.
+    /// Note that this method is not idempotent as the variables are not reset.
     pub fn calc_degrees(&mut self) {
         self.graph
             .adj
