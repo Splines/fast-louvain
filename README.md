@@ -36,6 +36,11 @@ Works on undirected, weighted graphs (weights are optional).
 cargo run --bin louvain
 ```
 
+## Warnings
+```
+cargo clippy --all -- -D warnings
+```
+
 ## Test
 Run all unit tests of every workspace.
 ```
