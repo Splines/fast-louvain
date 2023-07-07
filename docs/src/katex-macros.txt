@@ -1,3 +1,4 @@
 \R:{\mathbb{R}}
 \Cs:{\mathcal{C}}
 \Neigh:{\mathcal{N}}
+\singleton:{\mathring{#1}}
