@@ -15,3 +15,4 @@
 
 - [Algorithm](./louvain/algorithm.md)
 - [Delta modularity (singleton)](./louvain/delta-modularity.md)
+- [Delta modularity (generalized)](./louvain/delta-modularity-generalized.md)
