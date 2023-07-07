@@ -14,7 +14,7 @@ Q(\Cs) &\coloneqq
 \end{align}
 $$
 
-Let's see it in action with some examples and go through the calculations step by step. You can also verify the results in [Desmos](https://www.desmos.com/calculator/a9efq8ve7w).
+Let's see it in action with some examples and go through the calculations step by step. You can also verify the results in [Desmos](https://www.desmos.com/calculator/kljqtj6k0j).
 
 
 
@@ -185,3 +185,36 @@ $$
 If we somehow already know the values for $\Sigma_c$ and $\Sigma_{\hat{c}}$, i. e. the sum of the weights of edges inside the community and respectively the sum of the weights of edges incident to community vertices (aka vertex degrees), the second formula is the way to go as we can just plug our values in and are done in no time.
 
 > 🎈 **Task**: Come up with your own graphs and calculate modularity by hand for those. Guess a good vertex-community assignment and see if modularity increases compared to a vertex-community assignment you feel is bad, e.g. when putting all vertices in one big community.
+
+
+---
+
+
+## More examples
+
+Here are some more examples of graphs used to test the code. The respective modularity values were calculated by hand in the same manner seen above.
+
+Weighted graph 2 with singleton communities
+
+TODO: Insert image of graph
+
+$$
+A = \begin{pmatrix}
+    42 & 5 & 1 & 1\\
+    5 & 0 & 3 & 2\\
+    1 & 3 & 7 & 2\\
+    1 & 2 & 2 & 0
+\end{pmatrix}
+$$
+
+$$
+m = \frac{1}{2} \sum_{u,v} A_{uv} = \frac{1}{2} (42 + 10 + 2 + 2 + 6 + 4 + 7 + 4) = 38.5
+$$
+
+$$
+\Cs = \{ \{0\}, \{1\}, \{2\}, \{3\} \}
+$$
+
+$$
+Q(\Cs) = \frac{2}{11} \approx 0.181818
+$$

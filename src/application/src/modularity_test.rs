@@ -17,9 +17,9 @@ fn modularity_init() {
 }
 
 #[test]
-fn modularity() {
-    let mut graphs = vec![unweighted_graph(), weighted_graph_1()];
-    let expected_modularities = vec![-0.06, -0.172653];
+fn modularity_for_sample_graphs_singletons() {
+    let mut graphs = vec![unweighted_graph(), weighted_graph_1(), weighted_graph_2()];
+    let expected_modularities = vec![-0.06, -0.172653, 0.181818];
 
     for (i, g) in graphs.iter_mut().enumerate() {
         g.calc_degrees();
