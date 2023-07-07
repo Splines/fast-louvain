@@ -1,5 +1,5 @@
 <p align="center">
-        <img src="https://github.com/Splines/fast-louvain/assets/37160523/a0f1f87a-8542-413e-86d8-2c8af846dd76"
+        <img src="https://github.com/Splines/fast-louvain/assets/37160523/a833d653-f883-4166-9f71-25e31d0d208e"
             width="200px">
         <h2 align="center">Fast Louvain</h3>
       <p align="center">Rust implementation of the Louvain algorithm for community detection in large networks.</p>   
