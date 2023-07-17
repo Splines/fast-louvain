@@ -50,7 +50,7 @@ impl<'a> Louvain<'a> {
                 let mut best_gain = 0.0;
 
                 for adjacent_node in self.graph.adjacent_nodes(node) {
-                    let target_community = self.modularity.assignment.get_community(*adjacent_node);
+                    let target_community = self.modularity.assignment.get_community(adjacent_node);
 
                     // let vertex_weighted_degree_of_edges_to_community = self
                     //     .graph

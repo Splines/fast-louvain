@@ -37,7 +37,7 @@ impl LouvainGraph {
         self.graph.adjacent_edges(node)
     }
 
-    pub fn adjacent_nodes(&self, node: Node) -> Vec<&Node> {
+    pub fn adjacent_nodes(&self, node: Node) -> Vec<Node> {
         self.graph.adjacent_nodes(node)
     }
 

@@ -60,6 +60,9 @@ impl Graph {
         }
     }
 
+    /// Returns the adjacent edges of a node.
+    ///
+    /// This might include self-loops.
     pub fn adjacent_edges(&self, node: Node) -> &HashMap<Node, EdgeWeight> {
         let res = self.adj.get(&node);
         match res {
@@ -68,14 +71,15 @@ impl Graph {
         }
     }
 
-    /// Convenience method to get the neighbors of a node.
-    /// TODO: Test that this method does not return the node itself
-    /// (when we encounter a self-loop edge)
-    pub fn adjacent_nodes(&self, node: Node) -> Vec<&Node> {
+    /// Returns the adjacent nodes of a node.
+    ///
+    /// This does not include the node itself if it has a self-loop.
+    pub fn adjacent_nodes(&self, node: Node) -> Vec<Node> {
         let neighbors = self.adjacent_edges(node);
         neighbors
             .keys()
             .filter(|&other| !self.is_self_loop(node, *other))
+            .copied() // no worries, we use usize for "Node"
             .collect()
     }
 

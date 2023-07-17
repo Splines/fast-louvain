@@ -76,3 +76,40 @@ fn insert_invalid_target_in_edge() {
     let mut g = Graph::new(3);
     g.insert_edge(0, 3, 1.0);
 }
+
+#[test]
+fn adjacent_edges() {
+    let mut g = Graph::new(4);
+    g.insert_edge(0, 0, 0.0);
+    g.insert_edge(0, 1, 1.0);
+    g.insert_edge(0, 2, 1.5);
+    g.insert_edge(2, 3, 4.2);
+
+    assert_eq!(
+        g.adjacent_edges(0),
+        &HashMap::from([(0, 0.0), (1, 1.0), (2, 1.5)])
+    );
+}
+
+#[test]
+fn adjacent_nodes() {
+    let mut g = Graph::new(4);
+    g.insert_edge(0, 0, 0.0);
+    g.insert_edge(0, 1, 1.0);
+    g.insert_edge(0, 2, 1.5);
+    g.insert_edge(2, 3, 4.2);
+    g.insert_edge(3, 0, 7.2);
+
+    assert_eq!(g.adjacent_nodes(0), vec![1, 2, 3]);
+}
+
+#[test]
+fn adjacent_nodes_does_not_contain_own_node() {
+    let mut g = Graph::new(3);
+    g.insert_edge(0, 0, 0.0);
+    g.insert_edge(0, 1, 1.0);
+    g.insert_edge(0, 2, 1.5);
+
+    // no node 0 in the result
+    assert_eq!(g.adjacent_nodes(0), vec![1, 2]);
+}
