@@ -18,6 +18,7 @@ impl<'a> Louvain<'a> {
         }
     }
 
+    /// TODO: split this function into smaller ones
     fn calc_one_level(&mut self) -> bool {
         let mut is_improvement_in_pass = false;
         let mut is_improvement_in_one_iteration = false; // one iteration in the current pass
@@ -51,12 +52,7 @@ impl<'a> Louvain<'a> {
 
                 for adjacent_node in self.graph.adjacent_nodes(node) {
                     let target_community = self.modularity.assignment.get_community(adjacent_node);
-
-                    // let vertex_weighted_degree_of_edges_to_community = self
-                    //     .graph
-                    //     .weighted_degree_of_edges_to_community(node, community);
                     let gain = self.modularity.gain(target_community, node);
-
                     if gain > best_gain {
                         best_community = community;
                         best_gain = gain;
