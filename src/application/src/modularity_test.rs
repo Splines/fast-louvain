@@ -11,9 +11,9 @@ fn modularity_init() {
 
     let m = Modularity::new(&g);
 
-    assert_eq!(m.vertex_to_community, vec![0, 1, 2, 3]);
-    assert_eq!(m.weights_in, vec![3.0, 0.0, 0.0, 1.0]);
-    assert_eq!(m.weights_tot, vec![4.0, 13.0, 7.5, 10.5]);
+    assert_eq!(m.assignment.node_to_community, vec![0, 1, 2, 3]);
+    assert_eq!(m.assignment.weights_in, vec![3.0, 0.0, 0.0, 1.0]);
+    assert_eq!(m.assignment.weights_tot, vec![4.0, 13.0, 7.5, 10.5]);
 }
 
 #[test]
@@ -25,7 +25,7 @@ fn modularity_for_sample_graphs_singletons() {
         g.calc_degrees();
         let m = Modularity::new(&g);
 
-        let m_rounded = (m.modularity() * 1e6).round() / 1e6;
+        let m_rounded = (m.calc_modularity() * 1e6).round() / 1e6;
         assert_eq!(m_rounded, expected_modularities[i]);
     }
 }

@@ -5,6 +5,8 @@ pub mod louvain_graph_samples;
 #[path = "./louvain_graph_test.rs"]
 mod louvain_graph_test;
 
+use std::collections::HashMap;
+
 use louvain_domain::graph::{EdgeWeight, Graph, Node};
 
 pub type NodeWeightedDegree = f64;
@@ -27,8 +29,16 @@ impl LouvainGraph {
         }
     }
 
-    pub fn capacity(&self) -> usize {
-        self.graph.capacity
+    pub fn num_nodes(&self) -> usize {
+        self.graph.num_nodes()
+    }
+
+    pub fn adjacent_edges(&self, node: Node) -> &HashMap<Node, EdgeWeight> {
+        self.graph.adjacent_edges(node)
+    }
+
+    pub fn adjacent_nodes(&self, node: Node) -> Vec<&Node> {
+        self.graph.adjacent_nodes(node)
     }
 
     pub fn insert_edge(&mut self, source: Node, target: Node, weight: EdgeWeight) {

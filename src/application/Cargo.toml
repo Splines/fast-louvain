@@ -9,3 +9,5 @@ publish = false
 louvain-domain = "0.0.0"
 
 # External dependencies
+rand = "0.8.5"
+

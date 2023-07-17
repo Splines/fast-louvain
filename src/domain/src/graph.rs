@@ -25,7 +25,7 @@ pub type Adj = HashMap<Node, HashMap<Node, EdgeWeight>>;
 #[derive(Debug)]
 pub struct Graph {
     pub adj: Adj,
-    pub capacity: usize,
+    capacity: usize,
 }
 
 impl Graph {
@@ -41,7 +41,7 @@ impl Graph {
     }
 
     pub fn insert_edge(&mut self, source: Node, target: Node, weight: EdgeWeight) {
-        let is_self_loop = self.is_self_loop(&source, &target);
+        let is_self_loop = self.is_self_loop(source, target);
 
         // Checks
         self.check_node_exists(&source);
@@ -68,7 +68,18 @@ impl Graph {
         }
     }
 
-    fn is_self_loop(&self, source: &Node, target: &Node) -> bool {
+    /// Convenience method to get the neighbors of a node.
+    /// TODO: Test that this method does not return the node itself
+    /// (when we encounter a self-loop edge)
+    pub fn adjacent_nodes(&self, node: Node) -> Vec<&Node> {
+        let neighbors = self.adjacent_edges(node);
+        neighbors
+            .keys()
+            .filter(|&other| !self.is_self_loop(node, *other))
+            .collect()
+    }
+
+    fn is_self_loop(&self, source: Node, target: Node) -> bool {
         source == target
     }
 
