@@ -5,7 +5,7 @@ pub mod louvain_graph_samples;
 #[path = "./louvain_graph_test.rs"]
 mod louvain_graph_test;
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use louvain_domain::graph::{EdgeWeight, Graph, Node};
 
@@ -37,7 +37,7 @@ impl LouvainGraph {
         self.graph.adjacent_edges(node)
     }
 
-    pub fn adjacent_nodes(&self, node: Node) -> Vec<Node> {
+    pub fn adjacent_nodes(&self, node: Node) -> HashSet<Node> {
         self.graph.adjacent_nodes(node)
     }
 

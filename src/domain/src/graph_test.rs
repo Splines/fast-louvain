@@ -100,7 +100,7 @@ fn adjacent_nodes() {
     g.insert_edge(2, 3, 4.2);
     g.insert_edge(3, 0, 7.2);
 
-    assert_eq!(g.adjacent_nodes(0), vec![1, 2, 3]);
+    assert_eq!(g.adjacent_nodes(0), HashSet::from([1, 2, 3]));
 }
 
 #[test]
@@ -111,5 +111,5 @@ fn adjacent_nodes_does_not_contain_own_node() {
     g.insert_edge(0, 2, 1.5);
 
     // no node 0 in the result
-    assert_eq!(g.adjacent_nodes(0), vec![1, 2]);
+    assert_eq!(g.adjacent_nodes(0), HashSet::from([1, 2]));
 }

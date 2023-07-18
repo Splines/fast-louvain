@@ -2,7 +2,7 @@
 #[path = "./graph_test.rs"]
 mod graph_test;
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 pub type Node = usize;
 pub type EdgeWeight = f64;
@@ -74,7 +74,7 @@ impl Graph {
     /// Returns the adjacent nodes of a node.
     ///
     /// This does not include the node itself if it has a self-loop.
-    pub fn adjacent_nodes(&self, node: Node) -> Vec<Node> {
+    pub fn adjacent_nodes(&self, node: Node) -> HashSet<Node> {
         let neighbors = self.adjacent_edges(node);
         neighbors
             .keys()
