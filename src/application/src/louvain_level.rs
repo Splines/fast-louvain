@@ -61,6 +61,17 @@ impl<'a> LouvainLevel<'a> {
             }
             count_graph_traversals += 1;
 
+            // TODO: What is a good value here for "max_graph_traversals"?
+            // 50 is just chosen arbitrarily in the expectation that the
+            // actual number of graph traversals is much lower.
+            if count_graph_traversals > 50 {
+                panic!(
+                    "The Louvain algorithm is somehow stuck in a local optimum
+                and cannot improve modularity anymore. Please report your specific
+                graph on GitHub, so we can investigate this issue."
+                );
+            }
+
             if self.should_use_threshold {
                 quality = self.modularity.calc_modularity();
                 if (quality - old_quality) <= self.modularity_improvement_threshold {
