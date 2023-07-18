@@ -39,6 +39,8 @@ impl<'a> Modularity<'a> {
     /// We assume that the node has already been removed from its community
     /// beforehand by calling the respective remove function from the
     /// CommunityAssignment.
+    /// Note that this function is *not* dependent on a previous call
+    /// to calc_modularity().
     pub fn gain(&self, node: Node, target_community: Community) -> f64 {
         // Let m equal twice_total_weighted_degree. Then:
         // We drop a factor of 1/m here as we only need a relative measure
