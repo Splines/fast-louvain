@@ -5,7 +5,7 @@ use rand::thread_rng;
 
 use crate::{community_assignment::Community, louvain_graph::LouvainGraph, modularity::Modularity};
 
-pub struct Louvain<'a> {
+pub struct LouvainLevel<'a> {
     graph: &'a LouvainGraph,
     modularity: Modularity<'a>,
 
@@ -16,7 +16,7 @@ pub struct Louvain<'a> {
     should_use_threshold: bool,
 }
 
-impl<'a> Louvain<'a> {
+impl<'a> LouvainLevel<'a> {
     fn new(graph: &'a LouvainGraph, epsilon_min: f64) -> Self {
         let should_use_threshold = epsilon_min > 0.0;
         Self {
