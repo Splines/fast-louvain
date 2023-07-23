@@ -45,7 +45,7 @@ impl LouvainGraph {
         self.graph.increase_edge_weight(source, target, weight);
     }
 
-    pub fn adjacent_edges(&self, node: Node) -> &HashMap<Node, EdgeWeight> {
+    pub fn adjacent_edges(&self, node: Node) -> Option<&HashMap<Node, EdgeWeight>> {
         self.graph.adjacent_edges(node)
     }
 

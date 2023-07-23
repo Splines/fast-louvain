@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use louvain_domain::graph::Node;
 
@@ -63,8 +63,10 @@ impl<'a> CommunityAssignment<'a> {
         // in the sum (see formula for modularity). In other cases, we need the
         // weight of the edge for each order of arguments, thus i=vertex1 & j=vertex2
         // AND i=vertex2 & j=vertex1.
-
-        self.weights_in[community] -= 2.0 * self.weighted_degrees_to_communities[&community];
+        self.weights_in[community] = *self
+            .weighted_degrees_to_communities
+            .entry(community)
+            .or_default();
         self.weights_in[community] -= self.graph.self_loop_weighted_degrees[node];
 
         // Remove weighted degree of this vertex as contribution to the community
@@ -82,7 +84,11 @@ impl<'a> CommunityAssignment<'a> {
     /// via `removeNodeFromCommunity()`.
     pub fn insert_node_into_community(&mut self, node: Node, community: Community) {
         // see explanation in remove_node_from_its_community()
-        self.weights_in[community] += 2.0 * self.weighted_degrees_to_communities[&community];
+        self.weights_in[community] += 2.0
+            * *self
+                .weighted_degrees_to_communities
+                .entry(community)
+                .or_default();
         self.weights_in[community] += self.graph.self_loop_weighted_degrees[node];
 
         // We insert the vertex into a new community, so we need to add its
@@ -100,7 +106,8 @@ impl<'a> CommunityAssignment<'a> {
         // Calculate weights
         self.graph
             .adjacent_edges(node)
-            .iter()
+            .into_iter()
+            .flatten()
             // Filter out self-loops as we deal with their weights separately
             // in the modularity calculation
             // TODO: further explain this comment

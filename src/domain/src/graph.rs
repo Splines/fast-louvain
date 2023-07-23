@@ -89,12 +89,9 @@ impl Graph {
     /// Returns the adjacent edges of a node.
     ///
     /// This might include self-loops.
-    pub fn adjacent_edges(&self, node: Node) -> &HashMap<Node, EdgeWeight> {
-        let res = self.adj.get(&node);
-        match res {
-            Some(neighbors) => neighbors,
-            None => panic!("Node {} does not exist in graph", node),
-        }
+    pub fn adjacent_edges(&self, node: Node) -> Option<&HashMap<Node, EdgeWeight>> {
+        self.check_node_exists(&node);
+        return self.adj.get(&node);
     }
 
     /// Returns the adjacent nodes of a node.
@@ -102,7 +99,9 @@ impl Graph {
     /// This does not include the node itself if it has a self-loop.
     pub fn adjacent_nodes(&self, node: Node) -> HashSet<Node> {
         let neighbors = self.adjacent_edges(node);
+
         neighbors
+            .unwrap_or(&HashMap::new())
             .keys()
             .filter(|&other| !self.is_self_loop(node, *other))
             .copied() // no worries, we use usize for "Node"

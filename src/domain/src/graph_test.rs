@@ -65,10 +65,18 @@ fn self_loops() {
 }
 
 #[test]
-#[should_panic(expected = "Node 0")]
-fn access_invalid_node() {
+#[should_panic(expected = "Node 17")]
+fn access_invalid_node_in_adjacent_edges() {
     let g = Graph::new(3);
-    g.adjacent_edges(0);
+    g.adjacent_edges(17);
+}
+
+#[test]
+fn get_no_adjacent_edges() {
+    let g = Graph::new(3);
+    let adj_edges = g.adjacent_edges(0);
+
+    assert_eq!(adj_edges, None);
 }
 
 #[test]
@@ -94,7 +102,7 @@ fn adjacent_edges() {
     g.insert_edge(2, 3, 4.2);
 
     assert_eq!(
-        g.adjacent_edges(0),
+        g.adjacent_edges(0).unwrap(),
         &HashMap::from([(0, 0.0), (1, 1.0), (2, 1.5)])
     );
 }
@@ -109,6 +117,13 @@ fn adjacent_nodes() {
     g.insert_edge(3, 0, 7.2);
 
     assert_eq!(g.adjacent_nodes(0), HashSet::from([1, 2, 3]));
+}
+
+#[test]
+#[should_panic(expected = "Node 17")]
+fn access_invalid_node_in_adjacent_nodes() {
+    let g = Graph::new(3);
+    g.adjacent_nodes(17);
 }
 
 #[test]
@@ -135,7 +150,7 @@ fn iterate_over_edges() {
     let mut visited_source_nodes: Vec<Node> = vec![];
 
     for (source, target, weight) in g.edges() {
-        assert_eq!(weight, g.adjacent_edges(source)[&target]);
+        assert_eq!(weight, g.adjacent_edges(source).unwrap()[&target]);
 
         num_edges_visited += 1;
         visited_source_nodes.push(source);
@@ -157,6 +172,6 @@ fn increase_edge_weight() {
     g.increase_edge_weight(0, 2, 1.2);
     g.increase_edge_weight(0, 3, 42.0);
 
-    assert_eq!(g.adjacent_edges(0)[&0], 0.0);
-    assert_eq!(g.adjacent_edges(0)[&2], 2.7);
+    assert_eq!(g.adjacent_edges(0).unwrap()[&0], 0.0);
+    assert_eq!(g.adjacent_edges(0).unwrap()[&2], 2.7);
 }
