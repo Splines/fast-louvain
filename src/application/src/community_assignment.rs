@@ -99,6 +99,52 @@ impl<'a> CommunityAssignment<'a> {
         self.node_to_community[node] = community;
     }
 
+    /// Renumbers communities to have consecutive IDs starting from 0.
+    /// Returns the number of communities.
+    ///
+    /// # Example
+    /// When the communities currently "in use" (have at least one node in it)
+    /// are labeled 0,1,3, we would rename them to 0,1,2 and adjust the
+    /// node-to-community assignments accordingly.
+    pub fn renumber_communities(&mut self) -> usize {
+        // Example
+        // vertex -> community
+        // 1 --> 0
+        // 2 --> 1
+        // 3 --> 3
+        // 4 --> 3
+        // 5 --> 1
+        // 6 --> 1
+        // 7 --> 3
+
+        // See which of n (number nodes) possible communities are used
+        // i.e. here: communities 0,1,3 are used
+        let pessimistic_capacity = self.graph.num_nodes() / 2;
+        let mut used_communities: HashSet<Community> = HashSet::with_capacity(pessimistic_capacity);
+        for node in 0..self.graph.num_nodes() {
+            used_communities.insert(self.node_to_community[node]);
+        }
+
+        // Iterate over used communities and assign consecutive ids 0,1,2,...
+        // e.g. we would get: 0 -> 0, 1 -> 1, 3 -> 2 (community 3 is now called 2)
+        let mut renumbered_communities: HashMap<Node, Node> =
+            HashMap::with_capacity(used_communities.len());
+
+        let mut num_communities = 0;
+        for community in &used_communities {
+            renumbered_communities.insert(*community, num_communities);
+            num_communities += 1;
+        }
+        assert_eq!(num_communities, used_communities.len());
+
+        // Remap old community to renumbered one
+        for node in 0..self.graph.num_nodes() {
+            self.node_to_community[node] = renumbered_communities[&self.node_to_community[node]];
+        }
+
+        num_communities
+    }
+
     fn calc_weighted_degrees_for_communities(&mut self, node: Node) {
         // Reset weights
         self.weighted_degrees_to_communities.clear();
