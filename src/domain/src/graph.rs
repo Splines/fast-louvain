@@ -60,6 +60,32 @@ impl Graph {
         }
     }
 
+    /// Returns an iterator over all edges of the graph.
+    ///
+    /// Makes sure that each edge is only visited once. Only edges
+    /// with source <= target are visited. The order in which edges
+    /// are visited is not specified.
+    pub fn edges(&self) -> impl Iterator<Item = (Node, Node, EdgeWeight)> + '_ {
+        self.adj.iter().flat_map(|(source, neighbors)| {
+            neighbors
+                .iter()
+                // avoid visiting the same edge twice
+                .filter(move |(target, _)| source <= target)
+                .map(move |(target, weight)| (*source, *target, *weight))
+        })
+    }
+
+    /// Increases the weight of an edge.
+    ///
+    /// If the edge does not exist, nothing happens.
+    pub fn increase_edge_weight(&mut self, source: Node, target: Node, weight_delta: EdgeWeight) {
+        self.adj.entry(source).and_modify(|neighbors| {
+            neighbors.entry(target).and_modify(|w| {
+                *w += weight_delta;
+            });
+        });
+    }
+
     /// Returns the adjacent edges of a node.
     ///
     /// This might include self-loops.

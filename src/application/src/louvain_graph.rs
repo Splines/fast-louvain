@@ -33,16 +33,24 @@ impl LouvainGraph {
         self.graph.num_nodes()
     }
 
+    pub fn insert_edge(&mut self, source: Node, target: Node, weight: EdgeWeight) {
+        self.graph.insert_edge(source, target, weight);
+    }
+
+    pub fn edges(&self) -> impl Iterator<Item = (usize, usize, f64)> + '_ {
+        self.graph.edges()
+    }
+
+    pub fn increase_edge_weight(&mut self, source: Node, target: Node, weight: EdgeWeight) {
+        self.graph.increase_edge_weight(source, target, weight);
+    }
+
     pub fn adjacent_edges(&self, node: Node) -> &HashMap<Node, EdgeWeight> {
         self.graph.adjacent_edges(node)
     }
 
     pub fn adjacent_nodes(&self, node: Node) -> HashSet<Node> {
         self.graph.adjacent_nodes(node)
-    }
-
-    pub fn insert_edge(&mut self, source: Node, target: Node, weight: EdgeWeight) {
-        self.graph.insert_edge(source, target, weight);
     }
 
     /// Calculates the weighted degree of every node.

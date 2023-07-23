@@ -29,3 +29,5 @@ fn modularity_for_sample_graphs_singletons() {
         assert_eq!(m_rounded, expected_modularities[i]);
     }
 }
+
+// TODO: Add modularity tests for gain() !!
