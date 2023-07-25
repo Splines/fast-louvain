@@ -19,5 +19,8 @@ fn louvain_first_test() {
 
     // let mut graph = weighted_graph_1();
     let louvain = Louvain::new(&mut graph);
-    let hierarchy = louvain.run();
+    let (hierarchy, modularities) = louvain.run();
+
+    println!("Hierarchy: {:?}", hierarchy);
+    println!("Modularities: {:?}", modularities);
 }
