@@ -9,7 +9,7 @@ use crate::{
 type CommunityAssignmentHierarchy = Vec<NodeToCommunity>;
 
 pub struct Louvain<'a> {
-    graph: &'a LouvainGraph,
+    graph: &'a mut LouvainGraph,
 }
 
 impl<'a> Louvain<'a> {
@@ -24,43 +24,51 @@ impl<'a> Louvain<'a> {
     pub fn run(&self) -> CommunityAssignmentHierarchy {
         let hierarchy = CommunityAssignmentHierarchy::new();
 
-        // first run
-        let (is_improvement, next_graph) = self.run_level(&self.graph);
-        if !is_improvement {
-            return hierarchy;
-        }
-
-        let mut working_graph: LouvainGraph = next_graph;
+        let mut is_first_run = true;
+        let mut working_graph: Option<LouvainGraph> = Option::None;
         loop {
-            let (is_improvement, next_graph) = self.run_level(&working_graph);
-            working_graph = next_graph;
+            let (is_improvement, mut next_graph) = if is_first_run {
+                is_first_run = false;
+                self.run_level(self.graph, &hierarchy)
+            } else {
+                self.run_level(
+                    &working_graph.expect("Next graph must have been set by now"),
+                    &hierarchy,
+                )
+            };
+            next_graph.calc_degrees();
+            working_graph = Some(next_graph);
+
             if !is_improvement {
                 break;
             }
         }
 
-        println!("-------");
-        let final_runner = LouvainLevel::new(&working_graph, 0.0);
-        let final_modularity = final_runner.modularity.calc_modularity();
-        println!("Final modularity: {}", final_modularity);
+        // println!("-------");
+        // let final_runner = LouvainLevel::new(&working_graph, 0.0);
+        // let final_modularity = final_runner.modularity.calc_modularity();
+        // println!("Final modularity: {}", final_modularity);
 
         // TODO: fill hierarchy
         // Pass other information to the outside, e.g. node-to-community mapping
         hierarchy
     }
 
-    pub fn run_level(&self, next_graph: &LouvainGraph) -> (bool, LouvainGraph) {
+    pub fn run_level(
+        &self,
+        graph: &LouvainGraph,
+        hierarchy: &CommunityAssignmentHierarchy,
+    ) -> (bool, LouvainGraph) {
         println!();
         println!("Run next level");
 
-        let mut level_runner = LouvainLevel::new(next_graph, 0.0);
+        let mut level_runner = LouvainLevel::new(graph, 0.0);
 
         let modularity = level_runner.modularity.calc_modularity();
         println!("Modularity: {}", modularity);
 
         let is_improvement = level_runner.optimize_one_level();
         let mut next_graph = level_runner.get_next_level_graph();
-        next_graph.calc_degrees();
 
         println!("Node to community assignment:");
         let node_to_community = &level_runner.modularity.assignment.node_to_community;
