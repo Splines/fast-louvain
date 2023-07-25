@@ -52,7 +52,7 @@ impl<'a> LouvainLevel<'a> {
             0.0 // dummy value
         };
 
-        let mut is_improvement_in_one_graph_traversal = false;
+        let mut is_improvement_in_one_graph_traversal;
         let mut count_graph_traversals = 0;
         loop {
             is_improvement_in_one_graph_traversal = false;
