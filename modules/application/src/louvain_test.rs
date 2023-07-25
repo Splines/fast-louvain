@@ -1,9 +1,11 @@
 use super::*;
 
+use crate::louvain_graph::louvain_graph_samples as samples;
+
 #[test]
 fn louvain_first_test() {
     // Just a first dummy test
-    let mut graph = LouvainGraph::new(9);
+    let mut graph = samples::house_and_triangle_graph();
     graph.insert_edge(0, 1, 1.0);
     graph.insert_edge(0, 4, 1.0);
     graph.insert_edge(4, 1, 1.0);
