@@ -1,3 +1,7 @@
+#[cfg(test)]
+#[path = "./community_assignment_test.rs"]
+mod community_assignment_test;
+
 use std::collections::{HashMap, HashSet};
 
 use louvain_domain::graph::Node;
