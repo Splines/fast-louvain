@@ -25,7 +25,7 @@ fn modularity_for_sample_graphs_singletons() {
         g.calc_degrees();
         let m = Modularity::new(&g);
 
-        let m_rounded = (m.calc_modularity() * 1e6).round() / 1e6;
+        let m_rounded = (m.calc_singleton_modularity() * 1e6).round() / 1e6;
         assert_eq!(m_rounded, expected_modularities[i]);
     }
 }

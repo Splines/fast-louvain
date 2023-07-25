@@ -17,7 +17,6 @@ fn louvain_first_test() {
     graph.insert_edge(6, 8, 1.0);
     graph.insert_edge(7, 8, 1.0);
 
-    // let mut graph = weighted_graph_1();
     let louvain = Louvain::new(&mut graph);
     let (hierarchy, modularities) = louvain.run();
 

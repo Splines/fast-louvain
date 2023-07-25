@@ -47,7 +47,7 @@ impl<'a> LouvainLevel<'a> {
         indices_shuffled.shuffle(&mut thread_rng());
 
         let mut quality = if self.should_use_threshold {
-            self.modularity.calc_modularity()
+            self.modularity.calc_singleton_modularity()
         } else {
             0.0 // dummy value
         };
@@ -78,7 +78,7 @@ impl<'a> LouvainLevel<'a> {
             }
 
             if self.should_use_threshold {
-                quality = self.modularity.calc_modularity();
+                quality = self.modularity.calc_singleton_modularity();
                 if (quality - old_quality) <= self.modularity_improvement_threshold {
                     break;
                 }

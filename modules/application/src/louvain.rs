@@ -72,7 +72,7 @@ impl<'a> Louvain<'a> {
         hierarchy: &mut CommunityAssignmentHierarchy,
     ) -> (bool, LouvainGraph, f64) {
         let mut level_runner = LouvainLevel::new(graph, 0.0);
-        let modularity = level_runner.modularity.calc_modularity();
+        let modularity = level_runner.modularity.calc_singleton_modularity();
 
         // Phase I: Modularity Optimization
         let is_improvement = level_runner.optimize_one_level();

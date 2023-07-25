@@ -36,9 +36,14 @@ impl<'a> Modularity<'a> {
         }
     }
 
+    /// Calculates the modularity gain of moving a node to a target community.
+    /// The modularity gain is the difference between the modularity of the
+    /// graph before and after the move.
+    ///
     /// We assume that the node has already been removed from its community
     /// beforehand by calling the respective remove function from the
-    /// CommunityAssignment.
+    /// `CommunityAssignment`.
+    ///
     /// Note that this function is *not* dependent on a previous call
     /// to calc_modularity().
     pub fn gain(&self, node: Node, target_community: Community) -> f64 {
@@ -65,20 +70,27 @@ impl<'a> Modularity<'a> {
             - (tot_community * weighted_node_degree) / self.graph.twice_total_weighted_degree
     }
 
-    pub fn calc_modularity(&self) -> f64 {
+    /// Calculates the modularity of the current graph.
+    ///
+    /// Assumes that the degrees of the graph have already been calculated via
+    /// `LouvainGraph::calc_degrees()`. Also assumes that every node is in its
+    /// own singleton community.
+    ///
+    /// This is a rather expensive function, so it is only used at the beginning
+    /// of every pass for singleton communities (communities with just one node).
+    /// During the local optimization, we do not consider the absolute modularity
+    /// but only the relative modularity gain of moving a node to a target
+    /// community, which is handled by the `Modularity::gain()` function.
+    pub fn calc_singleton_modularity(&self) -> f64 {
         let mut quality: f64 = 0.0;
         let twice_total_weighted_degree = self.graph.twice_total_weighted_degree;
 
-        // TODO: Get rid of unique_communities retrieval
-        let unique_communities = self
-            .assignment
-            .node_to_community
-            .iter()
-            .collect::<std::collections::HashSet<_>>();
-
-        for community in unique_communities {
-            quality += self.assignment.weights_in[*community]
-                - self.assignment.weights_tot[*community].powi(2) / twice_total_weighted_degree;
+        // We assume that every node is in its own singleton community
+        // so that every entry (community) in `node_to_community` is unique.
+        // Otherwise, we would have to filter out duplicates.
+        for &community in &self.assignment.node_to_community {
+            quality += self.assignment.weights_in[community]
+                - self.assignment.weights_tot[community].powi(2) / twice_total_weighted_degree;
         }
 
         quality /= twice_total_weighted_degree;
