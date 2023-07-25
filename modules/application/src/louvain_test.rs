@@ -1,8 +1,4 @@
-use std::vec;
-
 use super::*;
-
-use crate::louvain_graph::louvain_graph_samples::*;
 
 #[test]
 fn louvain_first_test() {
