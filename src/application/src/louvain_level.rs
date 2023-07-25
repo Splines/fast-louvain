@@ -55,6 +55,7 @@ impl<'a> LouvainLevel<'a> {
         let mut is_improvement_in_one_graph_traversal = false;
         let mut count_graph_traversals = 0;
         loop {
+            is_improvement_in_one_graph_traversal = false;
             let old_quality = quality;
             for &node in &indices_shuffled {
                 let improvement = self.optimize_one_node(node);
@@ -82,7 +83,7 @@ impl<'a> LouvainLevel<'a> {
                     break;
                 }
             }
-            if is_improvement_in_one_graph_traversal {
+            if !is_improvement_in_one_graph_traversal {
                 break;
             }
         }
