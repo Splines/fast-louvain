@@ -8,16 +8,16 @@ publish = false
 
 [[bin]]
 name = "louvain"
-path = "src/bin/louvain.rs"
+path = "modules/bin/louvain.rs"
 
 [workspace]
-members = ["src/cli", "src/application", "src/domain"]
+members = ["modules/cli", "modules/application", "modules/domain"]
 
 [dependencies]
 # Workspace dependencies
 louvain-cli = "0.0.0"
 
 [patch.crates-io]
-louvain-cli = { path = "src/cli" }
-louvain-application = { path = "src/application" }
-louvain-domain = { path = "src/domain" }
+louvain-cli = { path = "modules/cli" }
+louvain-application = { path = "modules/application" }
+louvain-domain = { path = "modules/domain" }
