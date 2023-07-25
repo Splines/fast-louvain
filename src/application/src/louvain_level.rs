@@ -173,7 +173,7 @@ impl<'a> LouvainLevel<'a> {
                 // Edge already in the next graph -> only adjust weight
                 // (There was already one node in this community connected
                 // to a node in the other community.)
-                next_graph.increase_edge_weight(node, adj_node, new_weight);
+                next_graph.increase_edge_weight(source_community, other_community, new_weight);
             } else {
                 // Edge not yet in the next graph -> Insert it
                 // Communities become the new vertices
