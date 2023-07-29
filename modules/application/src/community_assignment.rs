@@ -67,10 +67,11 @@ impl<'a> CommunityAssignment<'a> {
         // in the sum (see formula for modularity). In other cases, we need the
         // weight of the edge for each order of arguments, thus i=vertex1 & j=vertex2
         // AND i=vertex2 & j=vertex1.
-        self.weights_in[community] = *self
-            .weighted_degrees_to_communities
-            .entry(community)
-            .or_default();
+        self.weights_in[community] -= 2.0
+            * *self
+                .weighted_degrees_to_communities
+                .entry(community)
+                .or_default();
         self.weights_in[community] -= self.graph.self_loop_weighted_degrees[node];
 
         // Remove weighted degree of this vertex as contribution to the community
