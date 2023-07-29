@@ -16,7 +16,9 @@ pub struct CommunityAssignment<'a> {
 
     graph: &'a LouvainGraph,
 
-    /// Sum of weights of edges belonging to a community c
+    /// Sum of weights of edges belonging to a community c.
+    /// Always refers to the community of the node that was removed from its
+    /// community most recently.
     pub weights_in: Vec<f64>,
 
     /// Sum of weighted degrees of nodes in a community c (including self-loops
@@ -24,6 +26,8 @@ pub struct CommunityAssignment<'a> {
     /// equivalent to: Sum of the weights of the edges incident to nodes
     /// in a communiyt c, including self-loops (including edges with both
     /// ends in community c).
+    /// Always refers to the community of the node that was removed from its
+    /// community most recently.
     pub weights_tot: Vec<f64>,
 
     /// includes the own community as well

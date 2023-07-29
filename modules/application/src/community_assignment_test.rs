@@ -22,24 +22,97 @@ fn remove_node_from_its_community_singletons() {
     let mut assignment = CommunityAssignment::new(&g);
 
     assignment.remove_node_from_its_community(0);
+    assert_eq!(assignment.node_to_community, vec![0, 1, 2, 3]);
     assert_eq!(assignment.weights_in, vec![0.0, 0.0, 0.0, 1.0]);
     assert_eq!(assignment.weights_tot, vec![0.0, 13.0, 7.5, 10.5]);
-    assert_eq!(assignment.node_to_community, vec![0, 1, 2, 3]);
 
     assignment.remove_node_from_its_community(1);
+    assert_eq!(assignment.node_to_community, vec![0, 0, 2, 3]);
     assert_eq!(assignment.weights_in, vec![0.0, 0.0, 0.0, 1.0]);
     assert_eq!(assignment.weights_tot, vec![0.0, 0.0, 7.5, 10.5]);
-    assert_eq!(assignment.node_to_community, vec![0, 0, 2, 3]);
 
     assignment.remove_node_from_its_community(2);
+    assert_eq!(assignment.node_to_community, vec![0, 0, 0, 3]);
     assert_eq!(assignment.weights_in, vec![0.0, 0.0, 0.0, 1.0]);
     assert_eq!(assignment.weights_tot, vec![0.0, 0.0, 0.0, 10.5]);
-    assert_eq!(assignment.node_to_community, vec![0, 0, 0, 3]);
 
     assignment.remove_node_from_its_community(3);
+    assert_eq!(assignment.node_to_community, vec![0, 0, 0, 0]);
     assert_eq!(assignment.weights_in, vec![0.0, 0.0, 0.0, 0.0]);
     assert_eq!(assignment.weights_tot, vec![0.0, 0.0, 0.0, 0.0]);
-    assert_eq!(assignment.node_to_community, vec![0, 0, 0, 0]);
+}
+
+#[test]
+fn remove_then_insert_into_other_community() {
+    let mut g = samples::weighted_graph_1();
+    g.calc_degrees();
+
+    let mut assignment = CommunityAssignment::new(&g);
+
+    assignment.remove_node_from_its_community(0);
+    assignment.insert_node_into_community(0, 3);
+    assert_eq!(assignment.node_to_community, vec![3, 1, 2, 3]);
+    assert_eq!(assignment.weights_in, vec![0.0, 0.0, 0.0, 4.0]);
+    assert_eq!(assignment.weights_tot, vec![0.0, 13.0, 7.5, 14.5]);
+
+    assignment.remove_node_from_its_community(0);
+    assert_eq!(assignment.node_to_community, vec![0, 1, 2, 3]);
+    assert_eq!(assignment.weights_in, vec![0.0, 0.0, 0.0, 1.0]);
+    assert_eq!(assignment.weights_tot, vec![0.0, 13.0, 7.5, 10.5]);
+
+    assignment.insert_node_into_community(0, 1);
+    assert_eq!(assignment.node_to_community, vec![1, 1, 2, 3]);
+    assert_eq!(assignment.weights_in, vec![0.0, 5.0, 0.0, 1.0]);
+    assert_eq!(assignment.weights_tot, vec![0.0, 17.0, 7.5, 10.5]);
+}
+
+#[test]
+fn remove_and_insert_until_one_big_community() {
+    let mut g = samples::weighted_graph_1();
+    g.calc_degrees();
+
+    let mut assignment = CommunityAssignment::new(&g);
+
+    assignment.remove_node_from_its_community(1);
+    assert_eq!(assignment.node_to_community, vec![0, 0, 2, 3]);
+    assert_eq!(assignment.weights_in, vec![3.0, 0.0, 0.0, 1.0]);
+    assert_eq!(assignment.weights_tot, vec![4.0, 0.0, 7.5, 10.5]);
+
+    assignment.insert_node_into_community(1, 3);
+    assert_eq!(assignment.node_to_community, vec![0, 3, 2, 3]);
+    assert_eq!(assignment.weights_in, vec![3.0, 0.0, 0.0, 15.0]);
+    assert_eq!(assignment.weights_tot, vec![4.0, 0.0, 7.5, 23.5]);
+
+    assignment.remove_node_from_its_community(2);
+    assignment.insert_node_into_community(2, 3);
+    assert_eq!(assignment.node_to_community, vec![0, 3, 3, 3]);
+    assert_eq!(assignment.weights_in, vec![3.0, 0.0, 0.0, 30.0]);
+    assert_eq!(assignment.weights_tot, vec![4.0, 0.0, 0.0, 31.0]);
+
+    assignment.remove_node_from_its_community(0);
+    assignment.insert_node_into_community(0, 3);
+    assert_eq!(assignment.node_to_community, vec![3, 3, 3, 3]);
+    assert_eq!(assignment.weights_in, vec![0.0, 0.0, 0.0, 35.0]);
+    assert_eq!(assignment.weights_tot, vec![0.0, 0.0, 0.0, 35.0]);
+}
+
+#[test]
+fn remove_and_insert_idempotent() {
+    let mut g = samples::weighted_graph_1();
+    g.calc_degrees();
+
+    let mut assignment = CommunityAssignment::new(&g);
+
+    for node in 0..g.num_nodes() {
+        let prev_community = assignment.node_to_community[node];
+
+        assignment.remove_node_from_its_community(node);
+        assignment.insert_node_into_community(node, prev_community);
+
+        assert_eq!(assignment.node_to_community, vec![0, 1, 2, 3]);
+        assert_eq!(assignment.weights_in, vec![3.0, 0.0, 0.0, 1.0]);
+        assert_eq!(assignment.weights_tot, vec![4.0, 13.0, 7.5, 10.5]);
+    }
 }
 
 fn get_unique(vec: &Vec<usize>) -> HashSet<usize> {
