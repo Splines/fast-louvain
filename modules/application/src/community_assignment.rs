@@ -106,10 +106,16 @@ impl<'a> CommunityAssignment<'a> {
     /// Renumbers communities to have consecutive IDs starting from 0.
     /// Returns the number of communities.
     ///
+    /// Note that the ordering is arbitrary, e.g. community 0 could be renamed
+    /// to 50 etc. The only guarantee is that listing all communities in a
+    /// sorted way in the end, will result in a list of consecutive numbers
+    /// starting from 0.
+    ///
     /// # Example
-    /// When the communities currently "in use" (have at least one node in it)
-    /// are labeled 0,1,3, we would rename them to 0,1,2 and adjust the
-    /// node-to-community assignments accordingly.
+    /// When the communities currently "in use" (have at least one node in it
+    /// that is connected to any other node in the graph) are labeled 0,1,3,
+    /// we would rename them to 0,1,2 and adjust the node-to-community
+    /// assignments accordingly.
     pub fn renumber_communities(&mut self) -> usize {
         // Example
         // vertex -> community
@@ -139,7 +145,6 @@ impl<'a> CommunityAssignment<'a> {
             renumbered_communities.insert(*community, num_communities);
             num_communities += 1;
         }
-        assert_eq!(num_communities, used_communities.len());
 
         // Remap old community to renumbered one
         for node in 0..self.graph.num_nodes() {
