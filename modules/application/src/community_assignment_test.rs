@@ -120,6 +120,39 @@ fn get_unique(vec: &Vec<usize>) -> HashSet<usize> {
 }
 
 #[test]
+fn renumber_communities_one_node() {
+    let mut g = LouvainGraph::new(1);
+    g.insert_edge(0, 0, 1.0);
+    g.calc_degrees();
+
+    let mut assignment = CommunityAssignment::new(&g);
+
+    let num_communities = assignment.renumber_communities();
+    assert_eq!(num_communities, 1);
+    assert_eq!(assignment.node_to_community, vec![0]);
+}
+
+#[test]
+fn renumber_communities_when_all_are_in_one_community() {
+    let mut g = samples::weighted_graph_1();
+    g.calc_degrees();
+
+    let mut assignment = CommunityAssignment::new(&g);
+
+    assignment.remove_node_from_its_community(0);
+    assignment.insert_node_into_community(0, 2);
+    assignment.remove_node_from_its_community(1);
+    assignment.insert_node_into_community(1, 2);
+    assignment.remove_node_from_its_community(3);
+    assignment.insert_node_into_community(3, 2);
+    assert_eq!(assignment.node_to_community, vec![2, 2, 2, 2]);
+
+    let num_communities = assignment.renumber_communities();
+    assert_eq!(num_communities, 1);
+    assert_eq!(assignment.node_to_community, vec![0, 0, 0, 0]);
+}
+
+#[test]
 fn renumber_communities_same_outcome() {
     let mut g = LouvainGraph::new(2);
     g.insert_edge(0, 0, 2.0);
