@@ -49,7 +49,7 @@ fn parse_graph_from_file(file: &std::path::PathBuf) -> LouvainGraph {
         g.insert_edge(source, target, weight);
     }
 
-    return g;
+    g
 }
 
 pub fn run() {
