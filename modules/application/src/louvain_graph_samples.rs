@@ -30,7 +30,7 @@ pub fn weighted_graph_1() -> LouvainGraph {
 }
 
 pub fn weighted_graph_2() -> LouvainGraph {
-    let mut g = LouvainGraph::new(10);
+    let mut g = LouvainGraph::new(4);
     g.insert_edge(0, 0, 42.0);
     g.insert_edge(0, 1, 5.0);
     g.insert_edge(0, 2, 1.0);

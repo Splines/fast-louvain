@@ -46,3 +46,11 @@ fn calc_degrees() {
     // Total degree
     assert_eq!(g.twice_total_weighted_degree, 35.0);
 }
+
+#[test]
+#[should_panic(expected = "isolated nodes")]
+fn no_isolated_nodes() {
+    let mut g = LouvainGraph::new(2);
+    g.insert_edge(0, 0, 2.0);
+    g.calc_degrees();
+}

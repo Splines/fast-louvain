@@ -19,9 +19,9 @@ pub type Adj = HashMap<Node, HashMap<Node, EdgeWeight>>;
 /// a map from nodes to their respective neighbors (including weights)
 /// as this information is retrieved frequently in the Louvain algorithm.
 ///
-/// Nodes are contiguously labeled from 0 to n-1.
-/// The Graph expects that all of its initial capacity is used and then
-/// the graph is not altered anymore at all.
+/// Nodes are contiguously labeled from 0 to n-1 (at most). Note that the graph
+/// does not enforce the capactiy to be fully used. There might be isolated
+/// nodes in the graph.
 #[derive(Debug)]
 pub struct Graph {
     pub adj: Adj,
