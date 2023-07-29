@@ -31,9 +31,16 @@ Works on undirected, weighted graphs (weights are optional).
 <br>
 <br>
 
+All commands should be executed from the project's root folder.
+
 ## Build & Run
 ```
 cargo run --bin louvain
+```
+
+Compare to [original C++ Louvain implementation](https://sites.google.com/site/findcommunities/home). This has to be executed in a Linux environment where `tar`, `make` etc. are available. Try WSL if you're on Windows.
+```
+python ./tests/compare_to_original_implementation.py 
 ```
 
 ## Warnings
