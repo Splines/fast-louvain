@@ -90,15 +90,20 @@ impl Graph {
     /// Returns the adjacent nodes of a node.
     ///
     /// This does not include the node itself if it has a self-loop.
-    pub fn adjacent_nodes(&self, node: Node) -> HashSet<Node> {
+    pub fn adjacent_nodes(&self, node: Node) -> Option<HashSet<Node>> {
         let neighbors = self.adjacent_edges(node);
 
-        neighbors
-            .unwrap_or(&HashMap::new())
+        if neighbors.is_none() {
+            return None;
+        }
+
+        let res: HashSet<Node> = neighbors
+            .unwrap()
             .keys()
             .filter(|&other| !self.is_self_loop(node, *other))
             .copied() // no worries, we use usize for "Node"
-            .collect()
+            .collect();
+        Some(res)
     }
 
     /// "Finalizes the graph" by making sure that nodes are contiguously labeled.

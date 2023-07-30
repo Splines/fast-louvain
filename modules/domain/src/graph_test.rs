@@ -95,7 +95,7 @@ fn adjacent_nodes() {
     g.insert_edge(3, 0, 7.2);
     g.finalize();
 
-    assert_eq!(g.adjacent_nodes(0), HashSet::from([1, 2, 3]));
+    assert_eq!(g.adjacent_nodes(0).unwrap(), HashSet::from([1, 2, 3]));
 }
 
 #[test]
@@ -106,7 +106,7 @@ fn no_adjacent_nodes() {
     g.finalize();
 
     let adj_nodes = g.adjacent_nodes(17);
-    assert_eq!(adj_nodes, HashSet::new());
+    assert_eq!(adj_nodes, None);
 }
 
 #[test]
@@ -118,7 +118,7 @@ fn adjacent_nodes_does_not_contain_own_node() {
     g.finalize();
 
     // no node 0 in the result
-    assert_eq!(g.adjacent_nodes(0), HashSet::from([1, 2]));
+    assert_eq!(g.adjacent_nodes(0).unwrap(), HashSet::from([1, 2]));
 }
 
 #[test]

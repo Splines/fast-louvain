@@ -126,14 +126,20 @@ impl<'a> LouvainLevel<'a> {
         let mut best_community = prev_community;
         let mut best_gain = 0.0;
 
-        for adj_node in self.graph.adjacent_nodes(node) {
-            let target_community = self.modularity.assignment.get_community(adj_node);
-            let gain = self.modularity.gain(node, target_community);
-            if gain > best_gain {
-                best_community = target_community;
-                best_gain = gain;
-            }
-        }
+        self.graph
+            .adjacent_nodes(node)
+            // TODO: explain difference between isolated nodes and
+            // singleton communities in docs.
+            .expect("Graph cannot contain isolated nodes, bug in Louvain Level algorithm")
+            .iter()
+            .for_each(|&adj_node| {
+                let target_community = self.modularity.assignment.get_community(adj_node);
+                let gain = self.modularity.gain(node, target_community);
+                if gain > best_gain {
+                    best_community = target_community;
+                    best_gain = gain;
+                }
+            });
 
         best_community
     }
