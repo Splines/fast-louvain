@@ -19,7 +19,11 @@ pub fn parse_graph_from_file(file: &std::path::PathBuf) -> LouvainGraph {
 
     let mut line_buf: &str;
     let mut line_split: std::str::Split<'_, char>;
-    reader.read_line(&mut buffer); // skip header
+    reader.read_line(&mut buffer);
+    if buffer.trim() != "source,target" && buffer.trim() != "source,target" {
+        panic!("Missing CSV header 'source,target' or 'source,target,weight'");
+    }
+
     while let Some(line) = reader.read_line(&mut buffer) {
         line_buf = line.expect("Could not read line from file").trim();
         if line_buf.is_empty() {
