@@ -25,7 +25,9 @@ fn parse_graph_from_file(file: &std::path::PathBuf) -> LouvainGraph {
         }
     };
 
-    let capacity_pessimistic_estimate = content.lines().count() / 2;
+    // TODO: outsource this. We cannot use half the size here as then,
+    // the vectors would not be big enough to store everything in the worst case.
+    let capacity_pessimistic_estimate = content.lines().count();
 
     // let num_lines = content.lines().filter(|line| !line.is_empty()).count();
     // TODO: use num_lines as initial suggestion for the capacity.
@@ -63,7 +65,7 @@ pub fn run() {
     let louvain = Louvain::new(&mut g);
     let (hierarchy, modularities) = louvain.run();
 
-    println!("Hierarchy: {:?}", hierarchy);
+    // println!("Hierarchy: {:?}", hierarchy);
     println!("Modularities: {:?}", modularities);
 
     let mut output = File::create(&args.output_path).expect("Could not create output file");
