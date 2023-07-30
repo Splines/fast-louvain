@@ -10,9 +10,4 @@ pub fn write_node_to_community_assignment_to_file(
     for (node, community) in node_to_community.iter().enumerate() {
         writeln!(&output, "{},{}", node, community).expect("Could not write assignment to file");
     }
-
-    println!(
-        "Node to community assignment written to '{}'",
-        file.display()
-    );
 }

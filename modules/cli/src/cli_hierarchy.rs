@@ -26,6 +26,9 @@ pub fn run(args: &HierarchyArgs) {
             args.output_path.as_ref().unwrap(),
         );
     }
-
+    println!(
+        "Node-community assignment written to '{}'",
+        &args.hierarchy_path.display()
+    );
     println!("Community assignment: {:?}", node_to_community);
 }

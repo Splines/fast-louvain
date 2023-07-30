@@ -19,6 +19,10 @@ pub fn parse_hierarchy_from_file(file: &std::path::PathBuf) -> CommunityAssignme
     hierarchy
 }
 
+/// Returns the community assignment for the given level in the hierarchy.
+///
+/// If level = 0, the community assignment for the last level in the hierarchy
+/// is returned.
 pub fn get_community_assignment_for_level(
     hierarchy: &CommunityAssignmentHierarchy,
     level: usize,
