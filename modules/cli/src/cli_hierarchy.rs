@@ -9,9 +9,14 @@ use crate::io::{
 pub struct HierarchyArgs {
     hierarchy_path: std::path::PathBuf,
 
+    /// Level in the hierarchy for which the community assignment should be
+    /// returned. First level in the hierarchy is level 1.
+    /// If level 0 is given or no level is given at all, then the community
+    /// assignment for the last level in the hierarchy is returned.
     #[arg(short = 'l', long = "level")]
     level: Option<usize>,
 
+    /// Output path for the final node-community assignment
     #[arg(short = 'o', long = "output")]
     output_path: Option<std::path::PathBuf>,
 }
