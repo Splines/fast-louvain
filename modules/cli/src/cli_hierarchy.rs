@@ -10,7 +10,7 @@ pub struct HierarchyArgs {
     hierarchy_path: std::path::PathBuf,
 
     #[arg(short = 'l', long = "level")]
-    level: usize,
+    level: Option<usize>,
 
     #[arg(short = 'o', long = "output")]
     output_path: Option<std::path::PathBuf>,
@@ -18,7 +18,9 @@ pub struct HierarchyArgs {
 
 pub fn run(args: &HierarchyArgs) {
     let hierarchy = parse_hierarchy_from_file(&args.hierarchy_path);
-    let node_to_community = get_community_assignment_for_level(&hierarchy, args.level);
+
+    let level = args.level.unwrap_or(0);
+    let node_to_community = get_community_assignment_for_level(&hierarchy, level);
 
     if args.output_path.is_some() {
         write_node_to_community_assignment_to_file(
