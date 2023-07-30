@@ -26,14 +26,12 @@ pub type Adj = HashMap<Node, HashMap<Node, EdgeWeight>>;
 #[derive(Debug)]
 pub struct Graph {
     pub adj: Adj,
-    pub is_read_only: bool,
 }
 
 impl Graph {
     pub fn new(initial_capacity: usize) -> Self {
         Graph {
             adj: HashMap::with_capacity(initial_capacity),
-            is_read_only: false,
         }
     }
 
@@ -42,10 +40,6 @@ impl Graph {
     }
 
     pub fn insert_edge(&mut self, source: Node, target: Node, weight: EdgeWeight) {
-        if self.is_read_only {
-            panic!("Graph is read-only now. Cannot insert edge.");
-        }
-
         self.assert_edge_does_not_exist(source, target);
 
         // Graph is undirected, so we add the edge in both directions
@@ -65,10 +59,6 @@ impl Graph {
     /// with source <= target are visited. The order in which edges
     /// are visited is not specified.
     pub fn edges(&self) -> impl Iterator<Item = (Node, Node, EdgeWeight)> + '_ {
-        if !self.is_read_only {
-            panic!("Graph is not read-only yet. Cannot iterate over edges.");
-        }
-
         self.adj.iter().flat_map(|(source, neighbors)| {
             neighbors
                 .iter()
@@ -82,10 +72,6 @@ impl Graph {
     ///
     /// Panics if the edge does not exist in the graph yet.
     pub fn increase_edge_weight(&mut self, source: Node, target: Node, weight_delta: EdgeWeight) {
-        if self.is_read_only {
-            panic!("Graph is read-only now. Cannot increase edge weight.");
-        }
-
         self.assert_edge_exists(source, target);
         self.adj.entry(source).and_modify(|neighbors| {
             neighbors.entry(target).and_modify(|w| {
@@ -98,11 +84,6 @@ impl Graph {
     ///
     /// This might include self-loops.
     pub fn adjacent_edges(&self, node: Node) -> Option<&HashMap<Node, EdgeWeight>> {
-        if !self.is_read_only {
-            panic!("Graph is not read-only yet. Cannot get adjacent edges.");
-        }
-
-        self.assert_node_exists(&node);
         return self.adj.get(&node);
     }
 
@@ -110,10 +91,6 @@ impl Graph {
     ///
     /// This does not include the node itself if it has a self-loop.
     pub fn adjacent_nodes(&self, node: Node) -> HashSet<Node> {
-        if !self.is_read_only {
-            panic!("Graph is not read-only yet. Cannot get adjacent nodes.");
-        }
-
         let neighbors = self.adjacent_edges(node);
 
         neighbors
@@ -124,19 +101,12 @@ impl Graph {
             .collect()
     }
 
-    /// "Finalizes the graph", i.e. makes it read-only, so that from now on
-    /// no more nodes/edges can be inserted and the graph can be used for
-    /// computations.
+    /// "Finalizes the graph" by making sure that nodes are contiguously labeled.
     ///
-    /// This function also checks that nodes are contiguously labeled.
     /// If this is not the case, it panics, as we need a contiguous labeling
     /// for the Louvain algorithm later on.
     pub fn finalize(&mut self) {
-        if self.num_nodes() <= 1 {
-            panic!("Graph must contain at least two nodes.");
-        }
         self.assert_nodes_contiguously_labeled();
-        self.is_read_only = true;
     }
 
     /// Checks if nodes are contiguously labeled, i.e. [0,1,2,3,...] instead of

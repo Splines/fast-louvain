@@ -61,13 +61,13 @@ fn self_loops() {
 }
 
 #[test]
-#[should_panic(expected = "Node 17")]
-fn access_invalid_node_in_adjacent_edges() {
+fn no_adjacent_edges() {
     let mut g = Graph::new(3);
     g.insert_edge(0, 0, 10.0);
     g.insert_edge(0, 1, 42.0);
     g.finalize();
-    g.adjacent_edges(17);
+    let adj_edges = g.adjacent_edges(17);
+    assert_eq!(adj_edges, None);
 }
 
 #[test]
@@ -99,14 +99,14 @@ fn adjacent_nodes() {
 }
 
 #[test]
-#[should_panic(expected = "Node 17")]
-fn access_invalid_node_in_adjacent_nodes() {
+fn no_adjacent_nodes() {
     let mut g = Graph::new(3);
     g.insert_edge(0, 0, 0.0);
     g.insert_edge(0, 1, 0.0);
     g.finalize();
 
-    g.adjacent_nodes(17);
+    let adj_nodes = g.adjacent_nodes(17);
+    assert_eq!(adj_nodes, HashSet::new());
 }
 
 #[test]
@@ -194,17 +194,6 @@ fn increase_edge_weight_non_existent_edge() {
 ////////////////////// Finalization and contiguous labeling ////////////////////
 
 #[test]
-#[should_panic(expected = "at least two nodes")]
-fn should_contain_at_least_two_nodes() {
-    // TODO: check this already in the CLI (!)
-    let mut g = Graph::new(1);
-    g.insert_edge(0, 0, 0.0);
-
-    assert_eq!(g.num_nodes(), 1);
-    g.finalize();
-}
-
-#[test]
 fn insert_nodes_greater_than_capacity() {
     let mut g = Graph::new(3);
     g.insert_edge(42, 0, 1.0);
@@ -227,62 +216,4 @@ fn nodes_not_contiguous() {
 #[should_panic(expected = "missing node 2")]
 fn nodes_not_contiguous_missing_node_in_error_message() {
     nodes_not_contiguous();
-}
-
-////////////////////////// Read-only attribute /////////////////////////////////
-
-#[test]
-fn read_only_false_initially() {
-    let mut g = Graph::new(3);
-    g.insert_edge(0, 1, 10.0);
-    g.insert_edge(0, 2, 10.0);
-
-    assert_eq!(g.is_read_only, false);
-}
-
-#[test]
-#[should_panic(expected = "read-only")]
-fn insert_edge_read_only() {
-    let mut g = Graph::new(5);
-    g.insert_edge(0, 1, 1.0);
-    g.insert_edge(1, 2, 1.0);
-    g.finalize();
-    g.insert_edge(1, 3, 2.0);
-}
-
-#[test]
-#[should_panic(expected = "read-only")]
-fn increase_edge_weight_read_only() {
-    let mut g = Graph::new(5);
-    g.insert_edge(0, 0, 10.0);
-    g.insert_edge(0, 1, 1.0);
-    g.finalize();
-    g.increase_edge_weight(0, 1, 1.0);
-}
-
-#[test]
-#[should_panic(expected = "read-only")]
-fn get_edges_not_read_only_yet() {
-    let mut g = Graph::new(5);
-    g.insert_edge(0, 0, 1.0);
-    g.insert_edge(0, 1, 1.0);
-    g.edges().count();
-}
-
-#[test]
-#[should_panic(expected = "read-only")]
-fn get_adjacent_edges_not_read_only_yet() {
-    let mut g = Graph::new(5);
-    g.insert_edge(0, 0, 1.0);
-    g.insert_edge(0, 1, 1.0);
-    g.adjacent_edges(0);
-}
-
-#[test]
-#[should_panic(expected = "read-only")]
-fn get_adjacent_nodes_not_read_only_yet() {
-    let mut g = Graph::new(5);
-    g.insert_edge(0, 0, 1.0);
-    g.insert_edge(0, 1, 1.0);
-    g.adjacent_nodes(0);
 }

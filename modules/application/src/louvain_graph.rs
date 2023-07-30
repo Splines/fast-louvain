@@ -65,9 +65,10 @@ impl LouvainGraph {
         self.graph.adjacent_nodes(node)
     }
 
-    // "Finalizes the graph", i.e. checks that there are no isolated nodes
-    // and calculates the weighted degrees of the nodes for later use in
-    // the Louvain algorithm.
+    /// "Finalizes the graph", i.e. checks that there are no isolated nodes
+    /// (makes sure they are contiguously labeled from 0 to n-1)
+    /// and calculates the weighted degrees of the nodes for later use
+    /// in the Louvain algorithm.
     pub fn finalize(&mut self) {
         self.graph.finalize();
         self.calc_degrees();
