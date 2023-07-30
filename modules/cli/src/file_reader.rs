@@ -37,7 +37,7 @@ impl BufReader {
             if buffer.is_empty() {
                 break;
             }
-            count += bytecount::count(&buffer, b'\n');
+            count += bytecount::count(buffer, b'\n');
             let len = buffer.len();
             self.reader.consume(len);
         }
