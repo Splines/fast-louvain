@@ -7,6 +7,8 @@ publish = false
 [dependencies]
 # Workspace dependencies
 louvain-application = "0.0.0"
+louvain-domain = "0.0.0"
 
 # External dependencies
 clap = { version = "4.0", features = ["derive"] }
+bytecount = "0.6.3"
