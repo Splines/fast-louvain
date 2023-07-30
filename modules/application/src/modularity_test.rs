@@ -14,7 +14,7 @@ fn modularity_for_sample_graphs_singletons() {
     let expected_modularities = vec![-0.06, -0.172653, 0.181818];
 
     for (i, g) in graphs.iter_mut().enumerate() {
-        g.calc_degrees();
+        g.finalize();
         let m = Modularity::new(&g);
 
         let modularity_rounded = (m.calc_singleton_modularity() * 1e6).round() / 1e6;
@@ -25,7 +25,7 @@ fn modularity_for_sample_graphs_singletons() {
 #[test]
 fn modularity_gain() {
     let mut g = samples::house_and_triangle_graph();
-    g.calc_degrees();
+    g.finalize();
     let mut m = Modularity::new(&g);
 
     // Setup specific community assignment as it could be encountered in a real run

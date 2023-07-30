@@ -14,7 +14,7 @@ pub struct Louvain<'a> {
 
 impl<'a> Louvain<'a> {
     pub fn new(graph: &'a mut LouvainGraph) -> Self {
-        graph.calc_degrees();
+        graph.finalize();
         Self { graph }
     }
 
@@ -41,7 +41,7 @@ impl<'a> Louvain<'a> {
                 )
             };
 
-            next_graph.calc_degrees();
+            next_graph.finalize();
             working_graph = Some(next_graph);
             modularities.push(modularity);
 

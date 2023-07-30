@@ -2,6 +2,7 @@
 #[path = "./graph_test.rs"]
 mod graph_test;
 
+use core::panic;
 use std::collections::{HashMap, HashSet};
 
 pub type Node = usize;
@@ -25,14 +26,14 @@ pub type Adj = HashMap<Node, HashMap<Node, EdgeWeight>>;
 #[derive(Debug)]
 pub struct Graph {
     pub adj: Adj,
-    capacity: usize,
+    pub is_read_only: bool,
 }
 
 impl Graph {
-    pub fn new(capacity: usize) -> Self {
+    pub fn new(initial_capacity: usize) -> Self {
         Graph {
-            adj: HashMap::with_capacity(capacity),
-            capacity,
+            adj: HashMap::with_capacity(initial_capacity),
+            is_read_only: false,
         }
     }
 
@@ -41,19 +42,17 @@ impl Graph {
     }
 
     pub fn insert_edge(&mut self, source: Node, target: Node, weight: EdgeWeight) {
-        let is_self_loop = self.is_self_loop(source, target);
-
-        // Checks
-        self.check_node_exists(&source);
-        if !is_self_loop {
-            self.check_node_exists(&target);
+        if self.is_read_only {
+            panic!("Graph is read-only now. Cannot insert edge.");
         }
 
-        self.check_edge_does_not_exist(source, target);
+        self.assert_edge_does_not_exist(source, target);
 
         // Graph is undirected, so we add the edge in both directions
         let neighbors = self.adj.entry(source).or_insert(HashMap::new());
         neighbors.insert(target, weight);
+
+        let is_self_loop = self.is_self_loop(source, target);
         if !is_self_loop {
             let neighbors = self.adj.entry(target).or_insert(HashMap::new());
             neighbors.insert(source, weight);
@@ -66,6 +65,10 @@ impl Graph {
     /// with source <= target are visited. The order in which edges
     /// are visited is not specified.
     pub fn edges(&self) -> impl Iterator<Item = (Node, Node, EdgeWeight)> + '_ {
+        if !self.is_read_only {
+            panic!("Graph is not read-only yet. Cannot iterate over edges.");
+        }
+
         self.adj.iter().flat_map(|(source, neighbors)| {
             neighbors
                 .iter()
@@ -77,8 +80,13 @@ impl Graph {
 
     /// Increases the weight of an edge.
     ///
-    /// If the edge does not exist, nothing happens.
+    /// Panics if the edge does not exist in the graph yet.
     pub fn increase_edge_weight(&mut self, source: Node, target: Node, weight_delta: EdgeWeight) {
+        if self.is_read_only {
+            panic!("Graph is read-only now. Cannot increase edge weight.");
+        }
+
+        self.assert_edge_exists(source, target);
         self.adj.entry(source).and_modify(|neighbors| {
             neighbors.entry(target).and_modify(|w| {
                 *w += weight_delta;
@@ -90,7 +98,11 @@ impl Graph {
     ///
     /// This might include self-loops.
     pub fn adjacent_edges(&self, node: Node) -> Option<&HashMap<Node, EdgeWeight>> {
-        self.check_node_exists(&node);
+        if !self.is_read_only {
+            panic!("Graph is not read-only yet. Cannot get adjacent edges.");
+        }
+
+        self.assert_node_exists(&node);
         return self.adj.get(&node);
     }
 
@@ -98,6 +110,10 @@ impl Graph {
     ///
     /// This does not include the node itself if it has a self-loop.
     pub fn adjacent_nodes(&self, node: Node) -> HashSet<Node> {
+        if !self.is_read_only {
+            panic!("Graph is not read-only yet. Cannot get adjacent nodes.");
+        }
+
         let neighbors = self.adjacent_edges(node);
 
         neighbors
@@ -108,17 +124,66 @@ impl Graph {
             .collect()
     }
 
+    /// "Finalizes the graph", i.e. makes it read-only, so that from now on
+    /// no more nodes/edges can be inserted and the graph can be used for
+    /// computations.
+    ///
+    /// This function also checks that nodes are contiguously labeled.
+    /// If this is not the case, it panics, as we need a contiguous labeling
+    /// for the Louvain algorithm later on.
+    pub fn finalize(&mut self) {
+        if self.num_nodes() <= 1 {
+            panic!("Graph must contain at least two nodes.");
+        }
+        self.assert_nodes_contiguously_labeled();
+        self.is_read_only = true;
+    }
+
+    /// Checks if nodes are contiguously labeled, i.e. [0,1,2,3,...] instead of
+    /// [0,3,4,5,6,...] (missing out the 2 in the example).
+    ///
+    /// Panics if nodes are not contiguously labeled.
+    fn assert_nodes_contiguously_labeled(&self) {
+        let mut nodes = self.adj.keys().collect::<Vec<_>>();
+        nodes.sort(); // TODO: this is costly! Maybe add an option to disable this check?
+                      // if user knows for sure that nodes are contiguously labeled.
+
+        let mut expected_node = 0;
+
+        for node in nodes {
+            if *node != expected_node {
+                panic!(
+                    "Nodes are not contiguously labeled. Please make sure you're \
+                    graph does not contain isolated nodes. Currently missing node \
+                    {}.",
+                    expected_node
+                );
+            }
+            expected_node += 1;
+        }
+    }
+
     fn is_self_loop(&self, source: Node, target: Node) -> bool {
         source == target
     }
 
-    fn check_node_exists(&self, node: &Node) {
-        if *node >= self.capacity {
-            panic!("Node {} does not exist in graph", node);
+    fn assert_node_exists(&self, node: &Node) {
+        if self.adj.contains_key(node) {
+            return;
+        }
+        panic!("Node {} does not exist in graph", node);
+    }
+
+    fn assert_edge_exists(&self, source: Node, target: Node) {
+        self.assert_node_exists(&source);
+        self.assert_node_exists(&target);
+
+        if !self.adj[&source].contains_key(&target) {
+            panic!("Edge ({} <-> {}) does not exist in graph", source, target);
         }
     }
 
-    fn check_edge_does_not_exist(&self, source: Node, target: Node) {
+    fn assert_edge_does_not_exist(&self, source: Node, target: Node) {
         if !self.adj.contains_key(&source) {
             return;
         }

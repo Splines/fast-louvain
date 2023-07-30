@@ -13,6 +13,7 @@ struct Cli {
 
     #[arg(short = 'o', long = "output")]
     output_path: std::path::PathBuf,
+    // TODO: make epsilon_min threshold adjustable from CLI
 }
 
 fn parse_graph_from_file(file: &std::path::PathBuf) -> LouvainGraph {
@@ -24,6 +25,8 @@ fn parse_graph_from_file(file: &std::path::PathBuf) -> LouvainGraph {
         }
     };
 
+    let capacity_pessimistic_estimate = content.lines().count() / 2;
+
     // let num_lines = content.lines().filter(|line| !line.is_empty()).count();
     // TODO: use num_lines as initial suggestion for the capacity.
     // We cannot now the exact number of nodes in the graph before having
@@ -31,7 +34,7 @@ fn parse_graph_from_file(file: &std::path::PathBuf) -> LouvainGraph {
     // store the maximum node id and with that check if there are isolated notes
     // instead of using the capacity.
     // TODO: for other graphs, code will fail here!
-    let mut g = LouvainGraph::new(4);
+    let mut g = LouvainGraph::new(capacity_pessimistic_estimate);
 
     for line in content.lines() {
         let mut line_split = line.split_whitespace();

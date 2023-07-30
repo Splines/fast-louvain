@@ -29,17 +29,15 @@ pub struct LouvainGraph {
     pub weighted_degrees: Vec<NodeWeightedDegree>,
     pub self_loop_weighted_degrees: Vec<NodeWeightedDegree>,
     pub twice_total_weighted_degree: NodeWeightedDegree,
-    capacity: usize,
 }
 
 impl LouvainGraph {
-    pub fn new(capacity: usize) -> Self {
+    pub fn new(initial_capacity: usize) -> Self {
         LouvainGraph {
-            graph: Graph::new(capacity),
-            weighted_degrees: vec![0.0; capacity],
-            self_loop_weighted_degrees: vec![0.0; capacity],
+            graph: Graph::new(initial_capacity),
+            weighted_degrees: vec![0.0; initial_capacity],
+            self_loop_weighted_degrees: vec![0.0; initial_capacity],
             twice_total_weighted_degree: 0.0,
-            capacity,
         }
     }
 
@@ -67,22 +65,17 @@ impl LouvainGraph {
         self.graph.adjacent_nodes(node)
     }
 
-    fn assert_no_isolated_nodes(&self) {
-        assert_eq!(
-            self.graph.num_nodes(),
-            self.capacity,
-            "Graph has {} nodes, but capacity is {}.
-        Make sure that your graph has no isolated nodes in it.",
-            self.graph.num_nodes(),
-            self.capacity
-        );
+    // "Finalizes the graph", i.e. checks that there are no isolated nodes
+    // and calculates the weighted degrees of the nodes for later use in
+    // the Louvain algorithm.
+    pub fn finalize(&mut self) {
+        self.graph.finalize();
+        self.calc_degrees();
     }
 
     /// Calculates the weighted degree of every node.
     /// Note that this method is not idempotent as the variables are not reset.
-    pub fn calc_degrees(&mut self) {
-        self.assert_no_isolated_nodes();
-
+    fn calc_degrees(&mut self) {
         self.graph
             .adj
             .iter()

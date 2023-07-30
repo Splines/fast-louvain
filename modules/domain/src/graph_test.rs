@@ -1,16 +1,12 @@
 use super::*;
 
 #[test]
-fn graph_metadata() {
+fn num_nodes() {
     let mut g = Graph::new(3);
     g.insert_edge(0, 1, 10.0);
+    g.insert_edge(0, 2, 10.0);
 
-    // Capacity
-    assert_eq!(g.adj.capacity(), 3);
-    assert_eq!(g.adj.capacity(), g.capacity);
-
-    // Num nodes
-    assert_eq!(g.adj.len(), 2);
+    assert_eq!(g.adj.len(), 3);
     assert_eq!(g.adj.len(), g.num_nodes());
 }
 
@@ -67,30 +63,11 @@ fn self_loops() {
 #[test]
 #[should_panic(expected = "Node 17")]
 fn access_invalid_node_in_adjacent_edges() {
-    let g = Graph::new(3);
+    let mut g = Graph::new(3);
+    g.insert_edge(0, 0, 10.0);
+    g.insert_edge(0, 1, 42.0);
+    g.finalize();
     g.adjacent_edges(17);
-}
-
-#[test]
-fn get_no_adjacent_edges() {
-    let g = Graph::new(3);
-    let adj_edges = g.adjacent_edges(0);
-
-    assert_eq!(adj_edges, None);
-}
-
-#[test]
-#[should_panic(expected = "Node 3")]
-fn insert_invalid_source_in_edge() {
-    let mut g = Graph::new(3);
-    g.insert_edge(3, 0, 1.0);
-}
-
-#[test]
-#[should_panic(expected = "Node 3")]
-fn insert_invalid_target_in_edge() {
-    let mut g = Graph::new(3);
-    g.insert_edge(0, 3, 1.0);
 }
 
 #[test]
@@ -100,6 +77,7 @@ fn adjacent_edges() {
     g.insert_edge(0, 1, 1.0);
     g.insert_edge(0, 2, 1.5);
     g.insert_edge(2, 3, 4.2);
+    g.finalize();
 
     assert_eq!(
         g.adjacent_edges(0).unwrap(),
@@ -115,6 +93,7 @@ fn adjacent_nodes() {
     g.insert_edge(0, 2, 1.5);
     g.insert_edge(2, 3, 4.2);
     g.insert_edge(3, 0, 7.2);
+    g.finalize();
 
     assert_eq!(g.adjacent_nodes(0), HashSet::from([1, 2, 3]));
 }
@@ -122,7 +101,11 @@ fn adjacent_nodes() {
 #[test]
 #[should_panic(expected = "Node 17")]
 fn access_invalid_node_in_adjacent_nodes() {
-    let g = Graph::new(3);
+    let mut g = Graph::new(3);
+    g.insert_edge(0, 0, 0.0);
+    g.insert_edge(0, 1, 0.0);
+    g.finalize();
+
     g.adjacent_nodes(17);
 }
 
@@ -132,6 +115,7 @@ fn adjacent_nodes_does_not_contain_own_node() {
     g.insert_edge(0, 0, 0.0);
     g.insert_edge(0, 1, 1.0);
     g.insert_edge(0, 2, 1.5);
+    g.finalize();
 
     // no node 0 in the result
     assert_eq!(g.adjacent_nodes(0), HashSet::from([1, 2]));
@@ -145,6 +129,7 @@ fn iterate_over_edges() {
     g.insert_edge(2, 0, 1.5);
     g.insert_edge(2, 3, 42.0);
     g.insert_edge(2, 2, 1.34);
+    g.finalize();
 
     let mut num_edges_visited = 0;
     let mut visited_source_nodes: Vec<Node> = vec![];
@@ -167,11 +152,137 @@ fn iterate_over_edges() {
 fn increase_edge_weight() {
     let mut g = Graph::new(4);
     g.insert_edge(0, 0, 0.0);
-    g.insert_edge(0, 2, 1.5);
-
-    g.increase_edge_weight(0, 2, 1.2);
-    g.increase_edge_weight(0, 3, 42.0);
+    g.insert_edge(0, 1, 1.5);
+    g.increase_edge_weight(0, 1, 1.2);
+    g.finalize();
 
     assert_eq!(g.adjacent_edges(0).unwrap()[&0], 0.0);
-    assert_eq!(g.adjacent_edges(0).unwrap()[&2], 2.7);
+    assert_eq!(g.adjacent_edges(0).unwrap()[&1], 2.7);
+}
+
+#[test]
+#[should_panic(expected = "Node 2")]
+fn increase_edge_weight_non_existent_source() {
+    let mut g = Graph::new(4);
+    g.insert_edge(0, 0, 0.0);
+    g.insert_edge(0, 1, 1.5);
+
+    g.increase_edge_weight(2, 1, 1.0);
+}
+
+#[test]
+#[should_panic(expected = "Node 3")]
+fn increase_edge_weight_non_existent_target() {
+    let mut g = Graph::new(4);
+    g.insert_edge(0, 0, 0.0);
+    g.insert_edge(0, 1, 1.5);
+
+    g.increase_edge_weight(1, 3, 1.0);
+}
+
+#[test]
+#[should_panic(expected = "does not exist")]
+fn increase_edge_weight_non_existent_edge() {
+    let mut g = Graph::new(4);
+    g.insert_edge(0, 0, 0.0);
+    g.insert_edge(0, 1, 1.5);
+    g.insert_edge(0, 2, 1.5);
+
+    g.increase_edge_weight(1, 2, 1.0);
+}
+
+////////////////////// Finalization and contiguous labeling ////////////////////
+
+#[test]
+#[should_panic(expected = "at least two nodes")]
+fn should_contain_at_least_two_nodes() {
+    // TODO: check this already in the CLI (!)
+    let mut g = Graph::new(1);
+    g.insert_edge(0, 0, 0.0);
+
+    assert_eq!(g.num_nodes(), 1);
+    g.finalize();
+}
+
+#[test]
+fn insert_nodes_greater_than_capacity() {
+    let mut g = Graph::new(3);
+    g.insert_edge(42, 0, 1.0);
+    g.insert_edge(0, 43, 1.0);
+    // should not panic
+}
+
+#[test]
+#[should_panic(expected = "contiguous")]
+fn nodes_not_contiguous() {
+    let mut g = Graph::new(3);
+    g.insert_edge(0, 1, 2.0);
+    g.insert_edge(42, 0, 1.0);
+    g.insert_edge(0, 43, 1.0);
+
+    g.finalize();
+}
+
+#[test]
+#[should_panic(expected = "missing node 2")]
+fn nodes_not_contiguous_missing_node_in_error_message() {
+    nodes_not_contiguous();
+}
+
+////////////////////////// Read-only attribute /////////////////////////////////
+
+#[test]
+fn read_only_false_initially() {
+    let mut g = Graph::new(3);
+    g.insert_edge(0, 1, 10.0);
+    g.insert_edge(0, 2, 10.0);
+
+    assert_eq!(g.is_read_only, false);
+}
+
+#[test]
+#[should_panic(expected = "read-only")]
+fn insert_edge_read_only() {
+    let mut g = Graph::new(5);
+    g.insert_edge(0, 1, 1.0);
+    g.insert_edge(1, 2, 1.0);
+    g.finalize();
+    g.insert_edge(1, 3, 2.0);
+}
+
+#[test]
+#[should_panic(expected = "read-only")]
+fn increase_edge_weight_read_only() {
+    let mut g = Graph::new(5);
+    g.insert_edge(0, 0, 10.0);
+    g.insert_edge(0, 1, 1.0);
+    g.finalize();
+    g.increase_edge_weight(0, 1, 1.0);
+}
+
+#[test]
+#[should_panic(expected = "read-only")]
+fn get_edges_not_read_only_yet() {
+    let mut g = Graph::new(5);
+    g.insert_edge(0, 0, 1.0);
+    g.insert_edge(0, 1, 1.0);
+    g.edges().count();
+}
+
+#[test]
+#[should_panic(expected = "read-only")]
+fn get_adjacent_edges_not_read_only_yet() {
+    let mut g = Graph::new(5);
+    g.insert_edge(0, 0, 1.0);
+    g.insert_edge(0, 1, 1.0);
+    g.adjacent_edges(0);
+}
+
+#[test]
+#[should_panic(expected = "read-only")]
+fn get_adjacent_nodes_not_read_only_yet() {
+    let mut g = Graph::new(5);
+    g.insert_edge(0, 0, 1.0);
+    g.insert_edge(0, 1, 1.0);
+    g.adjacent_nodes(0);
 }

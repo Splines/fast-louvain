@@ -5,7 +5,7 @@ use crate::louvain_graph::louvain_graph_samples as samples;
 #[test]
 fn initial_assignment_in_singletons() {
     let mut g = samples::weighted_graph_1();
-    g.calc_degrees();
+    g.finalize();
 
     let assignment = CommunityAssignment::new(&g);
 
@@ -17,7 +17,7 @@ fn initial_assignment_in_singletons() {
 #[test]
 fn remove_node_from_its_community_singletons() {
     let mut g = samples::weighted_graph_1();
-    g.calc_degrees();
+    g.finalize();
 
     let mut assignment = CommunityAssignment::new(&g);
 
@@ -45,7 +45,7 @@ fn remove_node_from_its_community_singletons() {
 #[test]
 fn remove_then_insert_into_other_community() {
     let mut g = samples::weighted_graph_1();
-    g.calc_degrees();
+    g.finalize();
 
     let mut assignment = CommunityAssignment::new(&g);
 
@@ -69,7 +69,7 @@ fn remove_then_insert_into_other_community() {
 #[test]
 fn remove_and_insert_until_one_big_community() {
     let mut g = samples::weighted_graph_1();
-    g.calc_degrees();
+    g.finalize();
 
     let mut assignment = CommunityAssignment::new(&g);
 
@@ -99,7 +99,7 @@ fn remove_and_insert_until_one_big_community() {
 #[test]
 fn remove_and_insert_idempotent() {
     let mut g = samples::weighted_graph_1();
-    g.calc_degrees();
+    g.finalize();
 
     let mut assignment = CommunityAssignment::new(&g);
 
@@ -123,7 +123,7 @@ fn get_unique(vec: &Vec<usize>) -> HashSet<usize> {
 fn renumber_communities_one_node() {
     let mut g = LouvainGraph::new(1);
     g.insert_edge(0, 0, 1.0);
-    g.calc_degrees();
+    g.finalize();
 
     let mut assignment = CommunityAssignment::new(&g);
 
@@ -135,7 +135,7 @@ fn renumber_communities_one_node() {
 #[test]
 fn renumber_communities_when_all_are_in_one_community() {
     let mut g = samples::weighted_graph_1();
-    g.calc_degrees();
+    g.finalize();
 
     let mut assignment = CommunityAssignment::new(&g);
 

@@ -29,7 +29,7 @@ fn calc_degrees() {
     g.insert_edge(2, 3, 2.5);
     g.insert_edge(3, 1, 7.0);
     g.insert_edge(3, 3, 1.0);
-    g.calc_degrees();
+    g.finalize();
 
     // Normal edges
     assert_eq!(g.weighted_degrees[0], 4.0);
@@ -48,9 +48,10 @@ fn calc_degrees() {
 }
 
 #[test]
-#[should_panic(expected = "isolated nodes")]
+#[should_panic(expected = "missing node 1")]
 fn no_isolated_nodes() {
     let mut g = LouvainGraph::new(2);
     g.insert_edge(0, 0, 2.0);
-    g.calc_degrees();
+    g.insert_edge(0, 2, 2.0);
+    g.finalize();
 }
