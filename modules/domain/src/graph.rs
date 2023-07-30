@@ -118,18 +118,15 @@ impl Graph {
         nodes.sort(); // TODO: this is costly! Maybe add an option to disable this check?
                       // if user knows for sure that nodes are contiguously labeled.
 
-        let mut expected_node = 0;
-
-        for node in nodes {
-            if *node != expected_node {
+        for (expected_node_id, node) in nodes.into_iter().enumerate() {
+            if *node != expected_node_id {
                 panic!(
                     "Nodes are not contiguously labeled. Please make sure you're \
                     graph does not contain isolated nodes. Currently missing node \
                     {}.",
-                    expected_node
+                    expected_node_id
                 );
             }
-            expected_node += 1;
         }
     }
 
