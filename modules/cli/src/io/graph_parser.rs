@@ -1,7 +1,7 @@
 use louvain_application::louvain_graph::LouvainGraph;
-
-use crate::file_reader;
 use louvain_domain::graph::Node;
+
+use crate::io::file_reader;
 
 pub fn parse_graph_from_file(file: &std::path::PathBuf) -> LouvainGraph {
     let mut reader = file_reader::BufReader::open(file)
@@ -19,6 +19,7 @@ pub fn parse_graph_from_file(file: &std::path::PathBuf) -> LouvainGraph {
 
     let mut line_buf: &str;
     let mut line_split: std::str::Split<'_, char>;
+    reader.read_line(&mut buffer); // skip header
     while let Some(line) = reader.read_line(&mut buffer) {
         line_buf = line.expect("Could not read line from file").trim();
         if line_buf.is_empty() {

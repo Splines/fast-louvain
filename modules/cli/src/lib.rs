@@ -1,3 +1,4 @@
 pub mod cli;
-pub mod file_reader;
-pub mod graph_file_parser;
+pub mod cli_hierarchy;
+pub mod cli_louvain;
+pub mod io;

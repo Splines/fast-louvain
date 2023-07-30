@@ -6,7 +6,7 @@ use crate::{
     community_assignment::NodeToCommunity, louvain_graph::LouvainGraph, louvain_level::LouvainLevel,
 };
 
-type CommunityAssignmentHierarchy = Vec<NodeToCommunity>;
+pub type CommunityAssignmentHierarchy = Vec<NodeToCommunity>;
 
 pub struct Louvain<'a> {
     graph: &'a mut LouvainGraph,
