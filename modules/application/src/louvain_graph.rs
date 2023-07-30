@@ -11,6 +11,8 @@ use louvain_domain::graph::{EdgeWeight, Graph, Node};
 
 pub type NodeWeightedDegree = f64;
 
+const VECTOR_RESIZE_INCREASE: usize = 100;
+
 /// An undirected graph of vertices and edges with weights.
 ///
 /// In addition to the `Graph` struct, this struct also stores the weighted
@@ -84,6 +86,15 @@ impl LouvainGraph {
                 // Note this also includes weights of self-loops
                 let incr_weight = neighbor_edges_weights.values().sum::<EdgeWeight>();
                 self.twice_total_weighted_degree += incr_weight; // weighted degree counted twice here -> each order of the argument
+
+                // Resize the vectors if necessary
+                if self.weighted_degrees.len() <= *node {
+                    self.weighted_degrees
+                        .resize(*node + VECTOR_RESIZE_INCREASE, 0.0);
+                    self.self_loop_weighted_degrees
+                        .resize(*node + VECTOR_RESIZE_INCREASE, 0.0);
+                }
+
                 self.weighted_degrees[*node] += incr_weight;
 
                 // Also consider self-loops separately
