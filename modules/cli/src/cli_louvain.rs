@@ -1,5 +1,5 @@
 use crate::io::graph_parser::parse_graph_from_file;
-use std::{fs::File, io::Write};
+use std::fs::File;
 
 use clap::Args;
 use louvain_application::louvain::Louvain;
@@ -23,7 +23,7 @@ pub fn run(args: &LouvainArgs) {
 
     println!("Modularities: {:?}", modularities);
 
-    let mut output = File::create(&args.output_path).expect("Could not create output file");
+    let output = File::create(&args.output_path).expect("Could not create output file");
     serde_json::to_writer(&output, &hierarchy).expect("Could not write hierarchy to output file");
     println!("Hierarchy written to '{}'", args.output_path.display());
 }
