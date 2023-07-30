@@ -93,12 +93,7 @@ impl Graph {
     pub fn adjacent_nodes(&self, node: Node) -> Option<HashSet<Node>> {
         let neighbors = self.adjacent_edges(node);
 
-        if neighbors.is_none() {
-            return None;
-        }
-
-        let res: HashSet<Node> = neighbors
-            .unwrap()
+        let res: HashSet<usize> = neighbors?
             .keys()
             .filter(|&other| !self.is_self_loop(node, *other))
             .copied() // no worries, we use usize for "Node"
