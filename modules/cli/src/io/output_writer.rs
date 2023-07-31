@@ -25,7 +25,7 @@ pub fn write_hierarchy_and_modularity_to_file(
     serde_json::to_writer(&output, &hierarchy).expect("Could not write hierarchy to output file");
 
     // newline
-    writeln!(&output, "").unwrap();
+    writeln!(&output).unwrap();
 
     // Modularities
     // TODO: right now we don't do anything with the modularities later on
