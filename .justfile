@@ -17,7 +17,7 @@ version:
 alias rd := run-dev
 # Run the project in development mode.
 run-dev options=optional:
-    cargo run --pro+file dev {{options}}
+    cargo run --profile dev {{options}}
 
 alias rr := run-release
 # Run the project in release mode.
