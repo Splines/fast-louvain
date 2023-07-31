@@ -2,8 +2,6 @@
 help:
     @just --list
 
-optional := ''
-
 
 ################################# Build & Run ##################################
 
@@ -16,13 +14,13 @@ version:
 
 alias rd := run-dev
 # Run the project in development mode.
-run-dev options=optional:
-    cargo run --profile dev {{options}}
+run-dev *ARGS:
+    cargo run --profile dev {{ARGS}}
 
 alias rr := run-release
 # Run the project in release mode.
-run-release options=optional:
-    cargo run --release {{options}}
+run-release *ARGS:
+    cargo run --release {{ARGS}}
 
 alias b := build
 # Build the project in release mode (not necessary for running).
