@@ -46,4 +46,5 @@ pub fn run(args: &LouvainArgs) {
             .expect("Could not write hierarchy to output file");
         println!("Hierarchy written to '{}'", path.display());
     }
+    println!("There are {} levels in the hierarchy", hierarchy.len());
 }

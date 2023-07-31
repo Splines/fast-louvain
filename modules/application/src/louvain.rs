@@ -31,23 +31,22 @@ impl<'a> Louvain<'a> {
         let mut working_graph: Option<LouvainGraph> = Option::None;
 
         loop {
-            let (is_improvement, mut next_graph, modularity) = if is_first_run {
+            let (is_improvement, next_graph) = if is_first_run {
                 is_first_run = false;
-                self.run_level(self.graph, &mut hierarchy)
+                self.run_level(self.graph, &mut hierarchy, &mut modularities)
             } else {
                 self.run_level(
                     &working_graph.expect("Working graph must have been set by now"),
                     &mut hierarchy,
+                    &mut modularities,
                 )
             };
-
-            next_graph.finalize();
-            working_graph = Some(next_graph);
-            modularities.push(modularity);
 
             if !is_improvement {
                 break;
             }
+
+            working_graph = next_graph;
         }
 
         (hierarchy, modularities)
@@ -58,7 +57,6 @@ impl<'a> Louvain<'a> {
     /// Returns
     /// - whether there was an improvement in modularity in the current level
     /// - the next graph
-    /// - the modularity of the current level.
     ///
     /// Typically, there are only a few (e.g. 5) passes, i.e. this function
     /// is only run a few times, until there is no improvement in modularity
@@ -70,19 +68,33 @@ impl<'a> Louvain<'a> {
         &self,
         graph: &LouvainGraph,
         hierarchy: &mut CommunityAssignmentHierarchy,
-    ) -> (bool, LouvainGraph, f64) {
+        modularities: &mut Vec<f64>,
+    ) -> (bool, Option<LouvainGraph>) {
         let mut level_runner = LouvainLevel::new(graph, 0.0);
         let modularity = level_runner.modularity.calc_singleton_modularity();
+
+        // Store modularity of previous hierarchy.
+        // For the first run, we get the modularity of the original graph.
+        // In the end, the modularities vector has length 1 more than the
+        // hierarchy vector.
+        modularities.push(modularity);
 
         // Phase I: Modularity Optimization
         let is_improvement = level_runner.optimize_one_level();
 
-        // Phase II: Community Aggregation
-        let next_graph = level_runner.get_next_level_graph();
+        if !is_improvement {
+            return (false, None);
+        }
 
+        // Phase II: Community Aggregation
+        let mut next_graph = level_runner.get_next_level_graph();
+        next_graph.finalize();
+
+        // We do not store the hierarchy for the original graph
+        // because "level 0" is trivial (every node is in its own community).
         let node_to_community = &level_runner.modularity.assignment.node_to_community;
         hierarchy.push(node_to_community.clone());
 
-        (is_improvement, next_graph, modularity)
+        (is_improvement, Some(next_graph))
     }
 }
