@@ -31,39 +31,18 @@ Works on undirected, weighted graphs (weights are optional).
 <br>
 <br>
 
-All commands should be executed from the project's root folder.
 
 ## Build & Run
+Have [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) installed. Then:
+
 ```
-cargo run --bin louvain
+cargo install just (a great command runner written in Rust)
+just run-release (or short: just rr)
 ```
 
-Compare to [original C++ Louvain implementation](https://sites.google.com/site/findcommunities/home). This has to be executed in a Linux environment where `tar`, `make` etc. are available. Try WSL if you're on Windows.
-```
-python ./tests/compare_to_original_implementation.py 
-```
-
-## Warnings
-```
-cargo clippy --all -- -D warnings
-```
-
-## Test
-Run all unit tests of every workspace.
-```
-cargo test --lib --locked --workspace
-```
-
-## Documentation book
-We use the [`mdbook-katex`](https://github.com/lzanini/mdbook-katex) preprocessor, so you should install it first:
-```
-cargo install mdbook-katex
-```
-
-Then build, watch and open the documentation book:
-```
-mdbook watch ./docs --open
-```
+- To list all available commands, run `just`.
+- To see the commands for a specific task, run `just --show <task>` or just (no pun)
+open the [`.justfile`](./.justfile).
 
 
 <!-- References -->
