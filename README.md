@@ -32,6 +32,24 @@ Works on undirected, weighted graphs (weights are optional).
 <br>
 
 
+## CLI usage
+You can use the `louvain` binary (download here, TODO) or run the crate directly with cargo by using the `just` command runner (see below).
+
+Run the Louvain algorithm and save the resulting communities as well
+as the complete hierarchy:
+```
+./louvain community ./my-graph.csv -s ./final-assignment.csv -h ./hierarchy.tmp
+```
+
+Having stored the `./hierarchy.tmp` file, you can use it to extract
+the communities at a specific level (here level 2):
+```
+./louvain hierarchy ./hierarchy.tmp -s ./assignment.csv -l 2
+```
+
+For more information, run `./louvain --help`.
+
+
 ## Build & Run
 Have [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) installed. Then:
 
@@ -39,10 +57,47 @@ Have [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) 
 cargo install just (a great command runner written in Rust)
 just run-release (or short: just rr)
 ```
+e.g. your command could like this:
+```
+just rr community ./my-graph.csv -s ./final-assignment.csv -h ./hierarchy.tmp
+```
 
-- To list all available commands, run `just`.
+- To list all available commands (not Louvain commands, rather project-related commands, e.g. to test the code, build it etc.), run `just`.
 - To see the commands for a specific task, run `just --show <task>` or just (no pun)
 open the [`.justfile`](./.justfile).
+- To see the commands for how to use the Louvain CLI, run `just rr -- -h` or directly invoke the binary `./louvain -h`.
+
+
+## Graph file format
+
+The input graph must be stored in a simple CSV file that looks like this (header is mandatory):
+```
+source,target,weight
+0,0,1.0
+0,1,3.1415
+```
+
+or without weights (in this case, we assume weight `1.0` for all edges):
+```
+source,target
+0,0
+0,1
+```
+
+For the `community` command: with the `-s` option, the final community assignment is stored in a CSV file like this:
+```
+node,community
+0,0
+1,0
+```
+
+With the `-h` option, the hierarchy is stored in a temporary file:
+```
+[[0,0,0,3,0,0,3,3,1,1,1,2,1,2,1,1],[1,0,0,1]]
+[-0.07142857142857144,0.3748558246828143,0.42524005486968447]
+```
+
+You can read in this file to get the node-to-community assignment as CSV file for one specific level (see CLI usage above).
 
 
 <!-- References -->
