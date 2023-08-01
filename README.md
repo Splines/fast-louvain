@@ -104,7 +104,11 @@ You can read in this file to get the node-to-community assignment as CSV file fo
 <details>
 <summary><h2>References</h2></summary>
 
-- TODO
+- [Original Louvain implementation (C++)](https://sites.google.com/site/findcommunities/home) and an [overview page of Louvain](https://perso.uclouvain.be/vincent.blondel/research/louvain.html)
+- Original paper by Blondel, Guillaume, Lambiotte and Lefebvre: [Fast unfolding of communities in large networks](https://perso.uclouvain.be/vincent.blondel/publications/08BG.pdf)
+- See more references in the [documentation book](https://splines.github.io/fast-louvain/)
+- If you need a directed version of Louvain, see [this repo](https://github.com/nicolasdugue/DirectedLouvain) by Dugué and Perez.
+
 </details>
 
 <!-- License -->
