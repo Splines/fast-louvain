@@ -1,3 +1,7 @@
+#[cfg(test)]
+#[path = "./cli_louvain_test.rs"]
+mod cli_louvain_test;
+
 use crate::io::{
     graph_parser::parse_graph_from_file,
     hierarchy_parser::get_community_assignment_for_level,
