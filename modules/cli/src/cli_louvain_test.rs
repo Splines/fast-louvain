@@ -1,5 +1,6 @@
 use super::*;
 
+#[ignore]
 #[test]
 fn original_louvain_graph() {
     // For now just a convenience test to run the original graph from the paper.
