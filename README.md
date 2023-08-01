@@ -11,8 +11,11 @@
 
 Works on undirected, weighted graphs (weights are optional).
 
-| :arrows_counterclockwise:   | This project is currently a work in progress. Once a first workable version is accomplished, I will publish a release. |
+| :arrows_counterclockwise:   | This project is currently in its initial construction phase. Once a first workable version is accomplished, I will publish a release. |
 |---------------|:-------------------------|
+
+*Current status of this project (2023-08-01)*: the first version including CLI usage works, but of course all command line flags etc. might change. Until the first release, we need to add more tests, especially tests that automatically verify results by running the original Louvain implementation and this Rust implementation. We should also include a CLI command to compute modularity for arbitrary node-community assignments. As the project is called "fast-louvain", we should also add benchmarks and improve the speed, e.g. speeding up the `increase_edge_weight()` method with more appropriate data structures. In the long run, this project should also become available as ready-to-use cargo library (besides the CLI). 
+
 
 | :scroll:   | The [documentation book](https://splines.github.io/fast-louvain/) (work in progress) includes a detailed description of modularity (including derivations of formulas) and the Louvain algorithm. It explains and motivates the use of the Louvain method and illustrates key aspects with images, e.g. this one: |
 |---------------|:-------------------------|
