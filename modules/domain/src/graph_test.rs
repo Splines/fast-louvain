@@ -153,11 +153,13 @@ fn increase_edge_weight() {
     let mut g = Graph::new(4);
     g.insert_edge(0, 0, 0.0);
     g.insert_edge(0, 1, 1.5);
+    g.increase_edge_weight(0, 0, 2.78);
     g.increase_edge_weight(0, 1, 1.2);
     g.finalize();
 
-    assert_eq!(g.adjacent_edges(0).unwrap()[&0], 0.0);
+    assert_eq!(g.adjacent_edges(0).unwrap()[&0], 2.78);
     assert_eq!(g.adjacent_edges(0).unwrap()[&1], 2.7);
+    assert_eq!(g.adjacent_edges(1).unwrap()[&0], 2.7);
 }
 
 #[test]

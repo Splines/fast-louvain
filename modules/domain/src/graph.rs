@@ -73,11 +73,20 @@ impl Graph {
     /// Panics if the edge does not exist in the graph yet.
     pub fn increase_edge_weight(&mut self, source: Node, target: Node, weight_delta: EdgeWeight) {
         self.assert_edge_exists(source, target);
+
         self.adj.entry(source).and_modify(|neighbors| {
             neighbors.entry(target).and_modify(|w| {
                 *w += weight_delta;
             });
         });
+
+        if source != target {
+            self.adj.entry(target).and_modify(|neighbors| {
+                neighbors.entry(source).and_modify(|w| {
+                    *w += weight_delta;
+                });
+            });
+        }
     }
 
     /// Returns the adjacent edges of a node.
