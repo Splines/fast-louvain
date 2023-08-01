@@ -264,6 +264,32 @@ m = \frac{1}{2} \sum_{u,v} A_{uv}
 = 28
 $$
 
+For the original node-community assignment where every node is in its own community, we have this clustering:
+
+$$
+\Cs = \{ \{0\}, \{1\}, \{2\}, \{3\}, \{4\}, \{5\}, \{6\}, \{7\}, \{8\}, \{9\}, \{10\}, \{11\}, \{12\}, \{13\}, \{14\}, \{15\} \}
+$$
+
+The initial modularity is therefore given by:
+
+$$
+\begin{align}
+Q(\Cs) &= \frac{1}{2m} \sum_{c\in \Cs} \left( \Sigma_c
+- \frac{\left(\Sigma_{\hat{c}}\right)^2}{2m} \right)\\
+% 
+&= \frac{1}{56} \biggl[
+    \Bigl( 0 - \frac{4^2}{56} \Bigr)
+    + \Bigl( 0 - \frac{5^2}{56} \Bigr)
+    + \Bigl( 0 - \frac{2^2}{56} \Bigr)
+    + \cdots
+\biggr]\\
+% 
+&= - \frac{1}{14} \approx -0.07143
+\end{align}
+$$
+
+In the next level of the hierarchy, Louvain locally optimizes modularity. The new clustering is given by:
+
 $$
 \Cs = \{ \{0, 1, 2, 4, 5\}, \{3, 6, 7\}, \{11, 13\}, \{8, 9, 10, 12, 14, 15\} \}
 $$
@@ -284,8 +310,7 @@ Q(\Cs) &= \frac{1}{2m} \sum_{c\in \Cs} \left( \Sigma_c
 \end{align}
 $$
 
-
-Take a look at the original paper and notice the second pass that merges two communities together, so that we are left with a clustering into two communities in the end:
+Finally, the second pass merges two communities together, so that we are left with a clustering into two communities in the end:
 
 $$
 \Cs = \{ \{0, 1, 2, 3, 4, 5, 6, 7\}, \{8, 9, 10, 11, 12, 13, 14, 15\} \}
@@ -306,3 +331,7 @@ Q(\Cs) &= \frac{1}{2m} \sum_{c\in \Cs} \left( \Sigma_c
 &= \frac{615}{1568} \approx 0.39222
 \end{align}
 $$
+
+In the 3rd pass of Louvain, we find that we cannot locally increase modularity anymore. Therefore, this is the final assignment that a full Louvain run might return. Note that due to the randomness in the algorithm, different runs can return different assignments with different modularity values. For example, another run finds that $0.375$ is the highest modularity it can achieve.
+
+> 🎈 **Task**: What is the corresponding clustering to this modularity value? Go to the [project page](https://github.com/Splines/fast-louvain), download the code and run it on the graph multiple times until you encounter a modularity value of $0.375$ in the final run. Use the `hierarchy` command to display the node-to-community assignment for the different levels. What is the reason for this behavior? *Hint*: Take a look at node $6$.
