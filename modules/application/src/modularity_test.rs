@@ -10,8 +10,11 @@ fn modularity_for_sample_graphs_singletons() {
         samples::unweighted_graph(),
         samples::weighted_graph_1(),
         samples::weighted_graph_2(),
+        samples::original_louvain_paper_graph(),
+        samples::original_louvain_paper_graph_level_1(),
+        samples::original_louvain_paper_graph_level_2(),
     ];
-    let expected_modularities = vec![-0.06, -0.172653, 0.181818];
+    let expected_modularities = vec![-0.06, -0.172653, 0.181818, -0.071429, 0.346301, 0.392219];
 
     for (i, g) in graphs.iter_mut().enumerate() {
         g.finalize();

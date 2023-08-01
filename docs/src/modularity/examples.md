@@ -14,7 +14,16 @@ Q(\Cs) &\coloneqq
 \end{align}
 $$
 
-Let's see it in action with some examples and go through the calculations step by step. You can also verify the results in [Desmos](https://www.desmos.com/calculator/kljqtj6k0j).
+Also recall the definition of $\Sigma_c$ and $\Sigma_{\hat{c}}$:
+
+$$
+\begin{align}
+\Sigma_c &= \sum_{u\in c} \sum_{v \in c} A_{uv}\\
+\Sigma_{\hat{c}} &= \sum_{v\in c} k_v
+\end{align}
+$$
+
+Let's see it in action with some examples and go through the calculations step by step. You can also verify the results in [Desmos](https://www.desmos.com/calculator/wifzftziun).
 
 
 
@@ -190,11 +199,12 @@ If we somehow already know the values for $\Sigma_c$ and $\Sigma_{\hat{c}}$, i. 
 ---
 
 
-## More examples
+<br>
+<br>
 
 Here are some more examples of graphs used to test the code. The respective modularity values were calculated by hand in the same manner seen above.
 
-Weighted graph 2 with singleton communities
+## Weighted graph 2 with singleton communities
 
 TODO: Insert image of graph
 
@@ -217,4 +227,82 @@ $$
 
 $$
 Q(\Cs) = \frac{2}{11} \approx 0.181818
+$$
+
+## Original Louvain paper graph
+
+TODO: Insert image of graph
+
+$$
+A =
+\begin{pmatrix}
+    \textbf{0} & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+    0 & \textbf{0} & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+    1 & 1 & \textbf{0} & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+    1 & 0 & 0 & \textbf{0} & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+    1 & 1 & 1 & 0 & \textbf{0} & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0\\
+    1 & 0 & 1 & 0 & 0 & \textbf{0} & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\
+    0 & 0 & 1 & 0 & 0 & 0 & \textbf{0} & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\\
+    0 & 1 & 0 & 1 & 0 & 1 & 1 & \textbf{0} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{0} & 1 & 1 & 1 & 0 & 0 & 1 & 1\\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \textbf{0} & 0 & 0 & 1 & 0 & 1 & 0\\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & \textbf{0} & 1 & 1 & 1 & 1 & 0\\
+    0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 1 & \textbf{0} & 0 & 1 & 0 & 0\\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & \textbf{0} & 0 & 0 & 0\\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & \textbf{0} & 0 & 0\\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & \textbf{0} & 0\\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{0}
+\end{pmatrix}
+$$
+
+The graph is undirected, so we only need to consider the upper diagonal matrix of $A$. We can also omit the diagonal since there are no self-loops in the graph (there are only $0$s on the diagonal). Therefore, the sum of all entries in the upper diagonal matrix of $A$ corresponds to the total number of edges in the graph:
+
+$$
+m = \frac{1}{2} \sum_{u,v} A_{uv}
+= \frac{1}{2} \sum_{u < v} 2 A_{uv}
+= \sum_{u < v} A_{uv}
+= 28
+$$
+
+$$
+\Cs = \{ \{0, 1, 2, 4, 5\}, \{3, 6, 7\}, \{11, 13\}, \{8, 9, 10, 12, 14, 15\} \}
+$$
+
+$$
+\begin{align}
+Q(\Cs) &= \frac{1}{2m} \sum_{c\in \Cs} \left( \Sigma_c
+- \frac{\left(\Sigma_{\hat{c}}\right)^2}{2m} \right)\\
+% 
+&= \frac{1}{56} \biggl[
+    \Bigl( 2\cdot 7 - \frac{20^2}{56} \Bigr)
+    + \Bigl( 2\cdot 2 - \frac{9^2}{56} \Bigr)
+    + \Bigl( 2\cdot 1 - \frac{7^2}{56} \Bigr)
+    + \Bigl( 2\cdot 8 - \frac{20^2}{56} \Bigr)
+\biggr]\\
+% 
+&= \frac{543}{1568} \approx 0.34630
+\end{align}
+$$
+
+
+Take a look at the original paper and notice the second pass that merges two communities together, so that we are left with a clustering into two communities in the end:
+
+$$
+\Cs = \{ \{0, 1, 2, 3, 4, 5, 6, 7\}, \{8, 9, 10, 11, 12, 13, 14, 15\} \}
+$$
+
+Notice the four edges $(0,3)$, $(1,7)$, $(2,6)$, $(5,7)$ were *inter*-community edges, but are now *intra*-community edges as the two communities got merged together. The modularity increases to:
+
+$$
+\begin{align}
+Q(\Cs) &= \frac{1}{2m} \sum_{c\in \Cs} \left( \Sigma_c
+- \frac{\left(\Sigma_{\hat{c}}\right)^2}{2m} \right)\\
+% 
+&= \frac{1}{56} \biggl[
+    \Bigl( 2\cdot (7+2+4) - \frac{29^2}{56} \Bigr)
+    + \Bigl( 2\cdot (8+1+3) - \frac{27^2}{56} \Bigr)
+\biggr]\\
+% 
+&= \frac{615}{1568} \approx 0.39222
+\end{align}
 $$
