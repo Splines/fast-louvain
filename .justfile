@@ -47,8 +47,10 @@ clippy:
 # Try WSL if you're on Windows.
 # Compare the results of the original C++ implementation to our implementation.
 compare:
-    python3 ./tests/compare_to_original_implementation.py 
+    python3 ./tests/compare/compare.py 
 
+modularity:
+    python3 ./tests/compare/modularity.py
 
 ################################# Documentation ################################
 
