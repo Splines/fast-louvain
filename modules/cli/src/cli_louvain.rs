@@ -34,6 +34,7 @@ pub fn run(args: &LouvainArgs) {
     let louvain = Louvain::new(&mut g);
     let (hierarchy, modularities) = louvain.run();
 
+    println!();
     println!("Modularities: {:?}", modularities);
 
     if args.assignment_output_path.is_some() {

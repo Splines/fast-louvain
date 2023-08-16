@@ -66,8 +66,10 @@ impl<'a> Modularity<'a> {
             });
         let weighted_node_degree = self.graph.weighted_degrees[node];
 
-        vertex_weighted_degree_of_edges_to_community
-            - (tot_community * weighted_node_degree) / self.graph.twice_total_weighted_degree
+        let res = vertex_weighted_degree_of_edges_to_community
+            - (tot_community * weighted_node_degree) / self.graph.twice_total_weighted_degree;
+
+        res / (0.5 * self.graph.twice_total_weighted_degree)
     }
 
     /// Calculates the modularity of the current graph.

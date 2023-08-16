@@ -55,6 +55,12 @@ impl<'a> LouvainLevel<'a> {
         let mut is_improvement_in_one_graph_traversal;
         let mut count_graph_traversals = 0;
         loop {
+            println!();
+            println!();
+            println!(
+                "Optimize one level. Loop. Count: {}",
+                count_graph_traversals
+            );
             is_improvement_in_one_graph_traversal = false;
             let old_quality = quality;
             for &node in &indices_shuffled {
@@ -99,7 +105,11 @@ impl<'a> LouvainLevel<'a> {
     /// whether the node was moved to another community or stayed in its
     /// previous community.
     fn optimize_one_node(&mut self, node: Node) -> bool {
+        println!();
+        println!("💠 Optimize one node. Node: {}", node);
+
         let prev_community = self.modularity.assignment.get_community(node);
+        println!("Prev community: {}", prev_community);
 
         self.modularity
             .assignment
@@ -135,11 +145,29 @@ impl<'a> LouvainLevel<'a> {
             .for_each(|&adj_node| {
                 let target_community = self.modularity.assignment.get_community(adj_node);
                 let gain = self.modularity.gain(node, target_community);
+                print!("Gain moving to community {}: {}", target_community, gain,);
+                println!(
+                    " (target community has nodes: {:?})",
+                    self.modularity
+                        .assignment
+                        .get_nodes_in_community(target_community)
+                );
                 if gain > best_gain {
                     best_community = target_community;
                     best_gain = gain;
                 }
             });
+        if best_community == prev_community {
+            println!(
+                "🏅 No improvement possible, staying in community {}",
+                prev_community
+            );
+        } else {
+            println!(
+                "🏅 Best community {}, yielding gain {}",
+                best_community, best_gain
+            );
+        }
 
         best_community
     }
@@ -154,6 +182,9 @@ impl<'a> LouvainLevel<'a> {
     /// - edge weights are the sum of weights of edges between communities
     /// - an edge within a community becomes two self-loops
     pub fn get_next_level_graph(&mut self) -> LouvainGraph {
+        println!();
+        println!("💨 Get next level graph");
+        println!();
         let num_communities = self.modularity.assignment.renumber_communities();
         let mut next_graph = LouvainGraph::new(num_communities);
 

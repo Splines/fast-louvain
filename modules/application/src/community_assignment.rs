@@ -159,6 +159,16 @@ impl<'a> CommunityAssignment<'a> {
         num_communities
     }
 
+    pub fn get_nodes_in_community(&self, community: Community) -> Vec<Node> {
+        let mut nodes = Vec::new();
+        for node in 0..self.graph.num_nodes() {
+            if self.node_to_community[node] == community {
+                nodes.push(node);
+            }
+        }
+        nodes
+    }
+
     fn calc_weighted_degrees_for_communities(&mut self, node: Node) {
         // Reset weights
         self.weighted_degrees_to_communities.clear();
